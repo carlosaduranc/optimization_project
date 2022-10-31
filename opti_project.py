@@ -157,3 +157,5 @@ R_guess = 0.015  # K/W
 
 # Minimizing error function
 print("HelloWorld")
+carlos = 1
+manuel = 2
