@@ -156,3 +156,4 @@ R_guess = 0.015  # K/W
 [error, time_error] = compare_models(Tz_a=Tz_true, Tz_b=Tz_guess, time=time_true, plot=True)
 
 # Minimizing error function
+print("HelloWorld")
