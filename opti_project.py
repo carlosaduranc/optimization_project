@@ -1,6 +1,8 @@
 from matplotlib import pyplot as plt
 from pandas import *
 import numpy as np
+from rockit import *
+from casadi import *
 
 # Model identification and heating strategy optimization for a small, single zone RC-lumped model
 # The room in question is a single room with a single window facing south (maximum sun exposure throughout the day)
@@ -138,6 +140,78 @@ def compare_models(Tz_a, Tz_b, time, plot=False):
     return e, time
 
 
+def minimize_function(Tz_a):
+    opti = Opti()
+    N = len(Tz_a)
+
+    delta_t = 3600  # s
+
+    data = read_csv("leuven_october2022_16-22.csv")
+
+    # Time dependent parameters
+    time = data['time'].tolist()
+    temp = data['temp'].tolist()  # deg C
+    for i in range(len(temp)):
+        temp[i] = temp[i] + 273.15  # deg K
+
+    Qg = np.zeros(len(time))
+    Qh = np.zeros(len(time))
+    for i in range(5):
+        Qg[0 + 24 * (i + 1):7 + 24 * (i + 1)] = 100  # W. Human heat output
+        Qg[18 + 24 * (i + 1):24 + 24 * (i + 1)] = 100  # W. For one person
+
+        Qh[0 + 24 * (i + 1):6 + 24 * (i + 1)] = 1000  # W. Heater
+        Qh[19 + 24 * (i + 1):24 + 24 * (i + 1)] = 1000  # W. Max power on/off strategy
+
+    Qg[0:24] = 100
+    Qg[144:] = 100
+    Qh[0:24] = 1000
+    Qh[144:] = 1000
+
+    Qsun = data['solrad'].tolist()  # W/m2
+
+    # Initiating optimization variables
+    R = opti.variable()
+    C = opti.variable()
+    gA = opti.variable()
+
+    #  parameter vector
+    p = vertcat(R, C, gA)
+
+    # Initial temperature guess
+    Tz = 293.15
+
+    # Error function: initial value
+    f = 0
+
+    for i in range(N):
+        f = f + (Tz - Tz_a[i]) ** 2
+
+        Tz_next = delta_t * ((Qsun[i] * gA + Qh[i] + Qg[i]) / C + (temp[i] - Tz) / (R * C)) + Tz
+        Tz = Tz_next
+
+    f = f + (Tz - Tz_a[N-1]) ** 2
+
+    opti.minimize(f)
+
+    opti.solver('ipopt')
+
+    # Guesses for the parameters
+    gA_guess = 0.1 * 0.9  # m2
+    C_guess = 1000000  # J/K
+    R_guess = 0.015  # K/W
+
+    p_hat = vertcat(R_guess, C_guess, gA_guess)
+
+    opti.set_initial(p, p_hat)
+
+    sol = opti.solve()
+
+    print(sol.value(p))
+
+    return sol.value(p)
+
+
 # Assume correct values
 gA_true = 0.45 * 2.10  # glazing factor * window area. m2
 C_true = 5000000  # J/K
@@ -149,10 +223,11 @@ C_guess = 1000000  # J/K
 R_guess = 0.015  # K/W
 
 # Loading true zone temperature and model zone temperature
-[Tz_true, time_true] = create_model_onoff(gA=gA_true, C=C_true, R=R_true, plot=True)
+[Tz_true, time_true] = create_model_onoff(gA=gA_true, C=C_true, R=R_true, plot=False)
 [Tz_guess, time_guess] = create_model_onoff(gA=gA_guess, C=C_guess, R=R_guess, plot=False)
 
 # Comparing models. Extracting error function to be minimized
-[error, time_error] = compare_models(Tz_a=Tz_true, Tz_b=Tz_guess, time=time_true, plot=True)
+[error, time_error] = compare_models(Tz_a=Tz_true, Tz_b=Tz_guess, time=time_true, plot=False)
 
 # Minimizing error function
+[R_opt, C_opt, gA_opt] = minimize_function(Tz_a=Tz_true)
