@@ -229,9 +229,11 @@ R_guess = 0.015  # K/W
 # Comparing models. Extracting error function to be minimized
 [error, time_error] = compare_models(Tz_a=Tz_true, Tz_b=Tz_guess, time=time_true, plot=False)
 
-# Minimizing error function
-<<<<<<< HEAD
-print("HelloWorld")
-=======
+# Minimizing error function. Output optimal parameters
 [R_opt, C_opt, gA_opt] = minimize_function(Tz_a=Tz_true)
->>>>>>> carlos_branch
+
+# Loading model with calculated variables and comparing to true model
+[Tz_opt, time_opt] = create_model_onoff(gA=gA_opt, C=C_opt, R=R_opt, plot=False)
+[error_opt, time_error_opt] = compare_models(Tz_a=Tz_true, Tz_b=Tz_opt, time=time_true, plot=True)
+
+print('RMSE: ', 1/len(error_opt)*np.sum(error_opt))
