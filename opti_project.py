@@ -196,11 +196,7 @@ def minimize_function(Tz_a):
 
     opti.solver('ipopt')
 
-    # Guesses for the parameters
-    gA_guess = 0.1 * 0.9  # m2
-    C_guess = 1000000  # J/K
-    R_guess = 0.015  # K/W
-
+    # filling initial guess parameter vector
     p_hat = vertcat(R_guess, C_guess, gA_guess)
 
     opti.set_initial(p, p_hat)
@@ -236,4 +232,4 @@ R_guess = 0.015  # K/W
 [Tz_opt, time_opt] = create_model_onoff(gA=gA_opt, C=C_opt, R=R_opt, plot=False)
 [error_opt, time_error_opt] = compare_models(Tz_a=Tz_true, Tz_b=Tz_opt, time=time_true, plot=True)
 
-print('RMSE: ', 1/len(error_opt)*np.sum(error_opt))
+print('\nRMSE: ', 1/len(error_opt)*np.sum(error_opt))
