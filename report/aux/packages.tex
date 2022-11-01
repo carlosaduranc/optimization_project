@@ -1,0 +1,65 @@
+%PACKAGES%
+\usepackage{amsmath}
+\usepackage[margin=1in]{geometry}
+
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{float}
+
+\usepackage{makecell}
+
+\usepackage[export]{adjustbox}
+
+\usepackage{booktabs}% http://ctan.org/pkg/booktabs
+\newcommand{\tabitem}{~~\llap{\textbullet}~~}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzstyle{block} = [rectangle, minimum width=3.5cm, minimum height=1cm, text centered, draw=black, fill=black!5]
+\tikzstyle{empty} = [circle, minimum size = 0.00001cm, draw=white, fill=white]
+
+\tikzstyle{arrow} = [thick,->,>=latex]
+\tikzstyle{line} = [thick,-,>=latex]
+
+
+\usepackage{float}
+\usepackage{aliascnt}
+\newaliascnt{eqfloat}{equation}
+\newfloat{eqfloat}{h}{eqflts}
+\floatname{eqfloat}{Equation}
+
+\usepackage{soul}
+
+\usepackage[hidelinks]{hyperref}
+
+\newcommand*{\ORGeqfloat}{}
+\let\ORGeqfloat\eqfloat
+\def\eqfloat{%
+	\let\ORIGINALcaption\caption
+	\def\caption{%
+		\addtocounter{equation}{-1}%
+		\ORIGINALcaption
+	}%
+	\ORGeqfloat
+}
+\usepackage[nonumberlist,
+	nomain=true,
+	acronym,
+	toc,
+	numberedsection=false,
+	]{glossaries}
+\newcounter{dummy} 	
+
+\usepackage{blindtext}% only for dummy text
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\fancyhead[L]{\rightmark}
+\renewcommand\headrulewidth{0.2pt}% default ist .4pt
+\renewcommand{\plainheadrulewidth}{0pt}% default is 0pt
+\setlength{\headheight}{15pt}
+\addtolength{\topmargin}{-2.5pt}
