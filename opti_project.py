@@ -49,7 +49,6 @@ def create_model_onoff(gA, C, R, plot=False):
 
     for i in range(len(time) - 1):
         cost[i + 1] = cost[i] + rate * Qh[i] * 0.001
-        print(cost[i])
 
     if plot:
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(7.5, 7.5))
@@ -204,8 +203,6 @@ def minimize_function(Tz_a):
 
     sol = opti.solve()
 
-    print(sol.value(p))
-
     return sol.value(p)
 
 
@@ -284,7 +281,6 @@ def mpc_from_model(plot=False):
 
         for i in range(len(time) - 1):
             cost[i + 1] = cost[i] + rate * Qh_mpc[i] * 0.001
-            print(cost[i])
 
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(7.5, 7.5))
         ax1.plot(time, temp, label=r'$T_{amb}$')
