@@ -208,6 +208,126 @@ def minimize_function(Tz_a):
     return sol.value(p)
 
 
+def mpc_from_model(plot=False):
+    # taking the optimal parameters calculated in previous step
+    R = R_opt
+    C = C_opt
+    gA = gA_opt
+
+    # gathering data
+    data = read_csv("leuven_october2022_16-22.csv")
+
+    # Time dependent parameters
+    Qsun = data['solrad'].tolist()  # W/m2
+    time = data['time'].tolist()
+    temp = data['temp'].tolist()  # deg C
+    for i in range(len(temp)):
+        temp[i] = temp[i] + 273.15  # deg K
+
+    Qg = np.zeros(len(time))
+    for i in range(5):
+        Qg[0 + 24 * (i + 1):7 + 24 * (i + 1)] = 100  # W. Human heat output
+        Qg[18 + 24 * (i + 1):24 + 24 * (i + 1)] = 100  # W. For one person
+    Qg[0:24] = 100
+    Qg[144:] = 100
+
+    # constants
+    N = len(time)  # number of samples
+    delta_t = 3600  # s in 1 hour
+
+    nx = 4  # number of states for system
+
+    # Initializing optimization problem
+    opti = Opti()
+
+    X = opti.variable(nx, N+1)  # states: Tz [K], Ta [K], Qsun [W/m2], Qg [W]. setup for multiple shooting
+    Tz_var = X[0, :]
+    Ta_var = X[1, :]
+    Qsun_var = X[2, :]
+    Qg_var = X[3, :]
+
+    U = opti.variable(N, 1)  # control variable: Qh [W]
+
+    x0 = opti.parameter(nx)  # initial state
+
+    # Setting shooting constraints
+    for i in range(N-1):
+        opti.subject_to(X[0, i+1] == delta_t * ((X[2, i] * gA + U[i] + X[3, i]) / C +
+                                                (X[1, i] - X[0, i]) / (R * C)) + X[0, i])
+        opti.subject_to(X[1, i+1] == temp[i+1])
+        opti.subject_to(X[2, i+1] == Qsun[i+1])
+        opti.subject_to(X[3, i+1] == Qg[i+1])
+
+    # setting bounded constraints (temp range for the zone)
+    opti.subject_to(opti.bounded(293.15, Tz_var, 298.15))
+    opti.subject_to(opti.bounded(0, U, 1000))
+
+    # setting initial conditions
+    opti.subject_to(X[:, 0] == x0)
+
+    # setting minimization equation
+    opti.minimize(sumsqr(U))
+
+    opti.set_value(x0, vertcat(293.15, temp[0], Qsun[0], Qg[0]))
+
+    opti.solver('ipopt')
+    sol = opti.solve()
+
+    if plot:
+        Qh_mpc = sol.value(U)[0:168]
+        Tz_mpc = sol.value(X[0, :])[0:168]
+
+        # calculating the running cost for energy use
+        cost = np.zeros(len(time))
+        rate = 0.410  # euro/kWh in Belgium
+
+        for i in range(len(time) - 1):
+            cost[i + 1] = cost[i] + rate * Qh_mpc[i] * 0.001
+
+        fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(7.5, 7.5))
+        ax1.plot(time, temp, label=r'$T_{amb}$')
+        ax1.plot(time, Tz_mpc, label=r'$T_{z}$')
+        for i in [293.15, 298.15]:
+            ax1.hlines(i, xmin=time[0], xmax=time[-1], lw=0.7, ls='-', color='k', zorder=1)
+        ax2.plot(time, Qsun, label=r'$Q_{sun} [W/m^2]$')
+        ax2.plot(time, Qg, label=r'$Q_g [W]$')
+        ax2.plot(time, Qh_mpc, label=r'$Q_h [W]$')
+        ax3.plot(time, cost)
+        ax3.hlines(cost[-1], xmin=time[0], xmax=time[-1], lw=0.7, ls='--', color='b', zorder=1)
+
+        for i in range(6):
+            ax1.vlines(time[24 * (i + 1)], ymin=-100, ymax=1000, lw=0.7, ls='--', color='k', zorder=1)
+            ax2.vlines(time[24 * (i + 1)], ymin=-100, ymax=2000, lw=0.7, ls='--', color='k', zorder=1)
+            ax3.vlines(time[24 * (i + 1)], ymin=-100, ymax=2000, lw=0.7, ls='--', color='k', zorder=1)
+
+        ax1.set_xticks([])
+        ax2.set_xticks([])
+
+        ax1.set_xlim([time[0], time[-1]])
+        ax2.set_xlim([time[0], time[-1]])
+        ax3.set_xlim([time[0], time[-1]])
+
+        ax1.set_ylim([280, 305])
+        ax2.set_ylim([0, 1300])
+        ax3.set_ylim([0, cost[-1]*1.05])
+
+        ax1.set_ylabel('Temperature [K]')
+        ax2.set_ylabel('Heat')
+        ax3.set_ylabel('Running cost [Euro]')
+
+        ax3.set_xticks([time[24 * (i + 1)] for i in range(6)])
+        ax3.set_xticklabels(['17/10', '18/10', '19/10', '20/10', '21/10', '22/10'])
+
+        ax1.legend(loc='upper right')
+        ax2.legend(loc='upper right')
+
+        ax1.set_title("MPC operation for one radiator. Minimize sumsqr(Qh)")
+
+        plt.show()
+
+    return sol.value(U), sol.value(X[0, :])
+
+
 # Assume correct values
 gA_true = 0.45 * 2.10  # glazing factor * window area. m2
 C_true = 5000000  # J/K
@@ -230,6 +350,10 @@ R_guess = 0.015  # K/W
 
 # Loading model with calculated variables and comparing to true model
 [Tz_opt, time_opt] = create_model_onoff(gA=gA_opt, C=C_opt, R=R_opt, plot=False)
-[error_opt, time_error_opt] = compare_models(Tz_a=Tz_true, Tz_b=Tz_opt, time=time_true, plot=True)
+[error_opt, time_error_opt] = compare_models(Tz_a=Tz_true, Tz_b=Tz_opt, time=time_true, plot=False)
 
-print('\nRMSE: ', 1/len(error_opt)*np.sum(error_opt))
+print('\nRMSE: ', 1/len(error_opt)*np.sum(error_opt), '\n\n\n\n')
+
+# Minimizing energy consumption (TRIVIAL)
+[heat, temperature] = mpc_from_model(plot=True)
+
