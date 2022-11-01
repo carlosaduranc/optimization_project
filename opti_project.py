@@ -48,7 +48,8 @@ def create_model_onoff(gA, C, R, plot=False):
     rate = 0.410  # euro/kWh in Belgium
 
     for i in range(len(time) - 1):
-        cost[i + 1] = cost[i] + rate * Qg[i] * 0.001
+        cost[i + 1] = cost[i] + rate * Qh[i] * 0.001
+        print(cost[i])
 
     if plot:
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(7.5, 7.5))
@@ -76,7 +77,7 @@ def create_model_onoff(gA, C, R, plot=False):
 
         ax1.set_ylim([280, 305])
         ax2.set_ylim([0, 1300])
-        ax3.set_ylim([0, 5])
+        ax3.set_ylim([0, cost[-1]*1.05])
 
         ax1.set_ylabel('Temperature [K]')
         ax2.set_ylabel('Heat')
@@ -258,7 +259,7 @@ def mpc_from_model(plot=False):
         opti.subject_to(X[2, i+1] == Qsun[i+1])
         opti.subject_to(X[3, i+1] == Qg[i+1])
 
-    # setting bounded constraints (temp range for the zone)
+    # setting bounded constraints (temp range for the zone and max power for radiator)
     opti.subject_to(opti.bounded(293.15, Tz_var, 298.15))
     opti.subject_to(opti.bounded(0, U, 1000))
 
@@ -283,6 +284,7 @@ def mpc_from_model(plot=False):
 
         for i in range(len(time) - 1):
             cost[i + 1] = cost[i] + rate * Qh_mpc[i] * 0.001
+            print(cost[i])
 
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(7.5, 7.5))
         ax1.plot(time, temp, label=r'$T_{amb}$')
@@ -339,7 +341,7 @@ C_guess = 1000000  # J/K
 R_guess = 0.015  # K/W
 
 # Loading true zone temperature and model zone temperature
-[Tz_true, time_true] = create_model_onoff(gA=gA_true, C=C_true, R=R_true, plot=False)
+[Tz_true, time_true] = create_model_onoff(gA=gA_true, C=C_true, R=R_true, plot=True)
 [Tz_guess, time_guess] = create_model_onoff(gA=gA_guess, C=C_guess, R=R_guess, plot=False)
 
 # Comparing models. Extracting error function to be minimized
