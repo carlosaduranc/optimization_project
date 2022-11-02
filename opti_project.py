@@ -332,9 +332,9 @@ C_true = 5000000  # J/K
 R_true = 0.01  # K/W
 
 # Guesses for the parameters
-gA_guess = 0.1 * 0.9  # m2
+gA_guess = 0.1 * 1  # m2
 C_guess = 1000000  # J/K
-R_guess = 0.015  # K/W
+R_guess = 1  # K/W
 
 # Loading true zone temperature and model zone temperature
 [Tz_true, time_true] = create_model_onoff(gA=gA_true, C=C_true, R=R_true, plot=True)
