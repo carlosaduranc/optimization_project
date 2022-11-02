@@ -76,7 +76,7 @@ def create_model_onoff(gA, C, R, plot=False):
 
         ax1.set_ylim([280, 305])
         ax2.set_ylim([0, 1300])
-        ax3.set_ylim([0, cost[-1]*1.05])
+        ax3.set_ylim([0, 50])
 
         ax1.set_ylabel('Temperature [K]')
         ax2.set_ylabel('Heat')
@@ -313,7 +313,7 @@ def mpc_from_model(plot=False):
 
         ax1.set_ylim([280, 305])
         ax2.set_ylim([0, 1300])
-        ax3.set_ylim([0, cost[-1]*1.05])
+        ax3.set_ylim([0, 50])
 
         ax1.set_ylabel('Temperature [K]')
         ax2.set_ylabel('Heat')
