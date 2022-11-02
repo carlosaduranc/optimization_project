@@ -239,10 +239,6 @@ def mpc_from_model(plot=False):
     opti = Opti()
 
     X = opti.variable(nx, N+1)  # states: Tz [K], Ta [K], Qsun [W/m2], Qg [W]. setup for multiple shooting
-    Tz_var = X[0, :]
-    Ta_var = X[1, :]
-    Qsun_var = X[2, :]
-    Qg_var = X[3, :]
 
     U = opti.variable(N, 1)  # control variable: Qh [W]
 
