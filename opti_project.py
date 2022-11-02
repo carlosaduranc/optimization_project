@@ -256,8 +256,14 @@ def mpc_from_model(plot=False):
         opti.subject_to(X[2, i+1] == Qsun[i+1])
         opti.subject_to(X[3, i+1] == Qg[i+1])
 
-    # setting bounded constraints (temp range for the zone and max power for radiator)
-    opti.subject_to(opti.bounded(293.15, Tz_var, 298.15))
+    # setting bounded constraints (temp range for the zone whenever someone is home)
+    opti.subject_to(opti.bounded(293.15, X[0, 0:24], 298.15))  # weekend
+    opti.subject_to(opti.bounded(293.15, X[0, 144:], 298.15))  # weekend
+    for i in range(6):  # weekdays
+        opti.subject_to(opti.bounded(293.15, X[0, 0 + 24 * (i + 1):7 + 24 * (i + 1)], 298.15))
+        opti.subject_to(opti.bounded(293.15, X[0, 18 + 24 * (i + 1):24 + 24 * (i + 1)], 298.15))
+
+    # bounded constraints for max and min power output for the radiator
     opti.subject_to(opti.bounded(0, U, 1000))
 
     # setting initial conditions
