@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.29)  5 NOV 2022 14:16
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.29)  5 NOV 2022 15:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1042,40 +1042,51 @@ Underfull \hbox (badness 10000) in paragraph at lines 3--4
 
  []
 
-<images/apartment.png, id=55, 4047.12pt x 2461.195pt>
+<images/apartment.png, id=60, 4047.12pt x 2461.195pt>
 File: images/apartment.png Graphic file (type png)
 <use images/apartment.png>
 Package pdftex.def Info: images/apartment.png  used on input line 13.
 (pdftex.def)             Requested size: 283.32735pt x 172.30125pt.
-)pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
- been already used, duplicate ignored
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.30 \newpage
-              [1 <./images/apartment.png>] (./sections/section2.tex) [2]
-(./sections/section3.tex) [3] (./sections/section4.tex) [4]
-(./sections/section5.tex) [5] (./Optimization_Arteaga_Duran.aux)
+l.23 
+      [1 <./images/apartment.png>]
+<images/single_zone.png, id=70, 413.545pt x 327.2225pt>
+File: images/single_zone.png Graphic file (type png)
+<use images/single_zone.png>
+Package pdftex.def Info: images/single_zone.png  used on input line 26.
+(pdftex.def)             Requested size: 206.77199pt x 163.61084pt.
+) [2 <./images/single_zone.png>]
+(./sections/section2.tex) [3] (./sections/section3.tex) [4]
+(./sections/section4.tex) [5] (./sections/section5.tex) [6]
+(./Optimization_Arteaga_Duran.aux)
 Package rerunfilecheck Info: File `Optimization_Arteaga_Duran.out' has not chan
 ged.
-(rerunfilecheck)             Checksum: F5673A8DF44DF1E584DA80877A0BA254;782.
+(rerunfilecheck)             Checksum: E771FBA4F31D237D5107FF1912129FCA;892.
  ) 
 Here is how much of TeX's memory you used:
- 27215 strings out of 478994
- 492479 string characters out of 5858184
- 836283 words of memory out of 5000000
- 44161 multiletter control sequences out of 15000+600000
+ 27232 strings out of 478994
+ 492794 string characters out of 5858184
+ 839390 words of memory out of 5000000
+ 44173 multiletter control sequences out of 15000+600000
  410373 words of font info for 51 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  107i,11n,105p,1047b,391s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 }</usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
-</usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></
-usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></us
-r/local/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on Optimization_Arteaga_Duran.pdf (7 pages, 17102535 bytes).
+</usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><
+/usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></u
+sr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr
+/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/l
+ocal/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/loca
+l/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local
+/texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
+Output written on Optimization_Arteaga_Duran.pdf (8 pages, 17162367 bytes).
 PDF statistics:
- 103 PDF objects out of 1000 (max. 8388607)
- 87 compressed objects within 1 object stream
- 15 named destinations out of 1000 (max. 500000)
- 66 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 135 PDF objects out of 1000 (max. 8388607)
+ 111 compressed objects within 2 object streams
+ 19 named destinations out of 1000 (max. 500000)
+ 79 words of extra memory for PDF output out of 10000 (max. 10000000)
 
