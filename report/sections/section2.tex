@@ -26,3 +26,21 @@ Qg[144:] = 100
 Qh[0:24] = 1000
 Qh[144:] = 1000
 \end{python}
+
+
+As a base equation, we propose to use the Energy balance equation shown in Eq. \ref{eq:energy_balance}
+\begin{equation}
+C_z \cdot \frac{d}{dt} T_z = \dot{Q}_h + gA \cdot \dot{Q}_{sun} + \frac{T_z(t)-T_a(t)}{R_w}
+\label{eq:energy_balance}
+\end{equation}
+
+This Ordinary Differential Equation (ODE) can be approximated with finite differences as it is proposed in Eq. \ref{eq:finite_difference}, in which $\Delta t = 3600s$; this value was selected based on the sampling time of historical data
+\begin{equation}
+C_z \cdot \frac{T_{z_{i+1}}-T_{z_{i}}}{\Delta t} = \dot{Q}_h + gA \cdot \dot{Q}_{sun} + \frac{T_{z_{i}}(t)-T_a(t)}{R_w}
+\label{eq:finite_difference}
+\end{equation}
+
+\begin{equation}
+T_{z_{i+1}} = \Delta t \cdot \left( \frac{\dot{Q}_h + gA \cdot \dot{Q}_{sun}}{C_z} + \frac{T_{z_{i}}(t)-T_a(t)}{R_w \cdot C_z} \right) + T_{z_{i}}
+\label{eq:finite_difference2}
+\end{equation}
