@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.29)  6 NOV 2022 09:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.29)  6 NOV 2022 20:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -22,9 +22,8 @@ File: size12.clo 2020/04/10 v1.4m Standard LaTeX file (size option)
 \abovecaptionskip=\skip47
 \belowcaptionskip=\skip48
 \bibindent=\dimen138
-)
-(./aux/packages.tex
-(/usr/local/texlive/2021/texmf-dist/tex/latex/amsmath/amsmath.sty
+) (./packages.tex (/usr/local/texlive/2021/texmf-dist/tex/latex/amsmath/amsmath
+.sty
 Package: amsmath 2020/09/23 v2.17i AMS math features
 \@mathmargin=\skip49
 
@@ -1104,13 +1103,13 @@ ged.
 (rerunfilecheck)             Checksum: E771FBA4F31D237D5107FF1912129FCA;892.
  ) 
 Here is how much of TeX's memory you used:
- 29311 strings out of 478994
- 519560 string characters out of 5858184
+ 29310 strings out of 478994
+ 519544 string characters out of 5858184
  1285834 words of memory out of 5000000
  46207 multiletter control sequences out of 15000+600000
  410879 words of font info for 54 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 107i,11n,105p,1047b,1681s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 107i,11n,105p,1043b,1681s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 }</usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><
