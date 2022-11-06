@@ -1,3 +1,28 @@
 \section{Problem Statement}
 \label{sec:problem_statement}
 
+Example for python code
+
+\begin{python}
+data = read_csv("leuven_october2022_16-22.csv")
+
+# Time dependent parameters
+time = data['time'].tolist()
+temp = data['temp'].tolist()  # deg C
+for i in range(len(temp)):
+temp[i] = temp[i] + 273.15  # deg K
+
+Qg = np.zeros(len(time))
+Qh = np.zeros(len(time))
+for i in range(5):
+	Qg[0 + 24 * (i + 1):7 + 24 * (i + 1)] = 100  # W. Human heat output
+	Qg[18 + 24 * (i + 1):24 + 24 * (i + 1)] = 100  # W. For one person
+
+	Qh[0 + 24 * (i + 1):6 + 24 * (i + 1)] = 1000  # W. Heater
+	Qh[19 + 24 * (i + 1):24 + 24 * (i + 1)] = 1000  # W. Max power on/off strategy
+
+Qg[0:24] = 100
+Qg[144:] = 100
+Qh[0:24] = 1000
+Qh[144:] = 1000
+\end{python}

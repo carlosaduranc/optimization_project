@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.29)  5 NOV 2022 15:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.29)  6 NOV 2022 09:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -711,6 +711,35 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip55
 )
+(/usr/local/texlive/2021/texmf-dist/tex/latex/pythonhighlight/pythonhighlight.s
+ty
+Package: pythonhighlight 2017/02/09 python code highlighting; provided by Olivi
+er Verdier <olivier.verdier@gmail.com>
+ (/usr/local/texlive/2021/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count312
+\lst@gtempboxa=\box66
+\lst@token=\toks46
+\lst@length=\count313
+\lst@currlwidth=\dimen309
+\lst@column=\count314
+\lst@pos=\count315
+\lst@lostspace=\dimen310
+\lst@width=\dimen311
+\lst@newlines=\count316
+\lst@lineno=\count317
+\lst@maxwidth=\dimen312
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2020/03/24 1.8d (Carsten Heinz)
+\c@lstnumber=\count318
+\lst@skipnumbers=\count319
+\lst@framebox=\box67
+)
+(/usr/local/texlive/2021/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2020/03/24 1.8d listings configuration
+))
+Package: listings 2020/03/24 1.8d (Carsten Heinz)
+)
 (/usr/local/texlive/2021/texmf-dist/tex/latex/glossaries/base/glossaries.sty
 Package: glossaries 2020/03/19 v4.46 (NLCT)
 
@@ -722,10 +751,10 @@ Package: mfirstuc 2017/11/14 v2.06 (NLCT)
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/etoolbox/etoolbox.sty
 Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count312
+\etb@tempcnta=\count320
 )
-\@glsmfirst=\toks46
-\@glsmrest=\toks47
+\@glsmfirst=\toks47
+\@glsmrest=\toks48
 )
 (/usr/local/texlive/2021/texmf-dist/tex/latex/textcase/textcase.sty
 Package: textcase 2019/09/14 v1.00 Text only upper/lower case changing (DPC)
@@ -738,7 +767,7 @@ Package: datatool-base 2019/09/27 v2.32 (NLCT)
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/substr/substr.sty
 Package: substr 2009/10/20 v1.2 Handle substrings
-\c@su@anzahl=\count313
+\c@su@anzahl=\count321
 )
 (/usr/local/texlive/2021/texmf-dist/tex/latex/datatool/datatool-fp.sty
 Package: datatool-fp 2019/09/27 v2.32 (NLCT)
@@ -749,19 +778,19 @@ Package: fp 1995/04/02
 `Fixed Point Package', Version 0.8, April 2, 1995 (C) Michael Mehlich
 (/usr/local/texlive/2021/texmf-dist/tex/latex/fp/defpattern.sty
 Package: defpattern 1994/10/12
-\actioncount=\count314
+\actioncount=\count322
 )
 (/usr/local/texlive/2021/texmf-dist/tex/latex/fp/fp-basic.sty
 Package: fp-basic 1996/05/13
-\FP@xs=\count315
-\FP@xia=\count316
-\FP@xib=\count317
-\FP@xfa=\count318
-\FP@xfb=\count319
-\FP@rega=\count320
-\FP@regb=\count321
-\FP@regs=\count322
-\FP@times=\count323
+\FP@xs=\count323
+\FP@xia=\count324
+\FP@xib=\count325
+\FP@xfa=\count326
+\FP@xfb=\count327
+\FP@rega=\count328
+\FP@regb=\count329
+\FP@regs=\count330
+\FP@times=\count331
 )
 (/usr/local/texlive/2021/texmf-dist/tex/latex/fp/fp-addons.sty
 Package: fp-addons 1995/03/15
@@ -780,7 +809,7 @@ Package: fp-pas 1994/08/29
 )
 (/usr/local/texlive/2021/texmf-dist/tex/latex/fp/fp-random.sty
 Package: fp-random 1995/02/23
-\FPseed=\count324
+\FPseed=\count332
 )
 (/usr/local/texlive/2021/texmf-dist/tex/latex/fp/fp-eqn.sty
 Package: fp-eqn 1995/04/03
@@ -791,27 +820,27 @@ Package: fp-upn 1996/10/21
 (/usr/local/texlive/2021/texmf-dist/tex/latex/fp/fp-eval.sty
 Package: fp-eval 1995/04/03
 )))
-\@dtl@toks=\toks48
-\@dtl@tmpcount=\count325
+\@dtl@toks=\toks49
+\@dtl@tmpcount=\count333
 \dtl@tmplength=\skip56
-\dtl@sortresult=\count326
-\@dtl@numgrpsepcount=\count327
-\@dtl@datatype=\count328
-\dtl@codeA=\count329
-\dtl@codeB=\count330
-\@dtl@foreach@level=\count331
+\dtl@sortresult=\count334
+\@dtl@numgrpsepcount=\count335
+\@dtl@datatype=\count336
+\dtl@codeA=\count337
+\dtl@codeB=\count338
+\@dtl@foreach@level=\count339
 )
 (/usr/local/texlive/2021/texmf-dist/tex/latex/glossaries/base/glossaries-compat
 ible-307.sty
 Package: glossaries-compatible-307 2020/03/19 v4.46 (NLCT)
 )
-\gls@level=\count332
-\@gls@tmpb=\toks49
+\gls@level=\count340
+\@gls@tmpb=\toks50
 \gls@tmplen=\skip57
-\glskeylisttok=\toks50
-\glslabeltok=\toks51
-\glsshorttok=\toks52
-\glslongtok=\toks53
+\glskeylisttok=\toks51
+\glslabeltok=\toks52
+\glsshorttok=\toks53
+\glslongtok=\toks54
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/glossaries/styles/glossary-hypern
 av.sty
@@ -831,17 +860,17 @@ Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
 \LTright=\skip60
 \LTpre=\skip61
 \LTpost=\skip62
-\LTchunksize=\count333
-\LTcapwidth=\dimen309
-\LT@head=\box66
-\LT@firsthead=\box67
-\LT@foot=\box68
-\LT@lastfoot=\box69
-\LT@cols=\count334
-\LT@rows=\count335
-\c@LT@tables=\count336
-\c@LT@chunks=\count337
-\LT@p@ftn=\toks54
+\LTchunksize=\count341
+\LTcapwidth=\dimen313
+\LT@head=\box68
+\LT@firsthead=\box69
+\LT@foot=\box70
+\LT@lastfoot=\box71
+\LT@cols=\count342
+\LT@rows=\count343
+\c@LT@tables=\count344
+\c@LT@chunks=\count345
+\LT@p@ftn=\toks55
 )
 \glsdescwidth=\skip63
 \glspagelistwidth=\skip64
@@ -851,52 +880,52 @@ sty
 Package: glossary-super 2020/03/19 v4.46 (NLCT)
  (/usr/local/texlive/2021/texmf-dist/tex/latex/supertabular/supertabular.sty
 Package: supertabular 2020/02/02 v4.1g the supertabular environment
-\c@tracingst=\count338
-\ST@wd=\dimen310
+\c@tracingst=\count346
+\ST@wd=\dimen314
 \ST@rightskip=\skip65
 \ST@leftskip=\skip66
 \ST@parfillskip=\skip67
-\ST@pageleft=\dimen311
-\ST@headht=\dimen312
-\ST@tailht=\dimen313
-\ST@pagesofar=\dimen314
-\ST@pboxht=\dimen315
-\ST@lineht=\dimen316
-\ST@prevht=\dimen317
-\ST@toadd=\dimen318
-\ST@dimen=\dimen319
-\ST@pbox=\box70
+\ST@pageleft=\dimen315
+\ST@headht=\dimen316
+\ST@tailht=\dimen317
+\ST@pagesofar=\dimen318
+\ST@pboxht=\dimen319
+\ST@lineht=\dimen320
+\ST@prevht=\dimen321
+\ST@toadd=\dimen322
+\ST@dimen=\dimen323
+\ST@pbox=\box72
 ))
 (/usr/local/texlive/2021/texmf-dist/tex/latex/glossaries/styles/glossary-tree.s
 ty
 Package: glossary-tree 2020/03/19 v4.46 (NLCT)
 \glstreeindent=\skip68
 ))
-\c@dummy=\count339
+\c@dummy=\count347
  (/usr/local/texlive/2021/texmf-dist/tex/latex/blindtext/blindtext.sty
 Package: blindtext 2012/01/06 V2.0 blindtext-Package
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/tools/xspace.sty
 Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
 )
-\c@blindtext=\count340
-\c@Blindtext=\count341
-\c@blind@countparstart=\count342
-\blind@countxx=\count343
-\blindtext@numBlindtext=\count344
-\blind@countyy=\count345
-\c@blindlist=\count346
-\c@blindlistlevel=\count347
-\c@blindlist@level=\count348
-\blind@listitem=\count349
-\c@blind@listcount=\count350
-\c@blind@levelcount=\count351
-\blind@mathformula=\count352
-\blind@Mathformula=\count353
-\c@blind@randomcount=\count354
-\c@blind@randommax=\count355
-\c@blind@pangramcount=\count356
-\c@blind@pangrammax=\count357
+\c@blindtext=\count348
+\c@Blindtext=\count349
+\c@blind@countparstart=\count350
+\blind@countxx=\count351
+\blindtext@numBlindtext=\count352
+\blind@countyy=\count353
+\c@blindlist=\count354
+\c@blindlistlevel=\count355
+\c@blindlist@level=\count356
+\blind@listitem=\count357
+\c@blind@listcount=\count358
+\c@blind@levelcount=\count359
+\blind@mathformula=\count360
+\blind@Mathformula=\count361
+\c@blind@randomcount=\count362
+\c@blind@randommax=\count363
+\c@blind@pangramcount=\count364
+\c@blind@pangrammax=\count365
 )
 (/usr/local/texlive/2021/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
 Package: fancyhdr 2021/01/28 v4.0.1 Extensive control of page headers and foote
@@ -913,8 +942,8 @@ rs
 ))
 (/usr/local/texlive/2021/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count358
-\l__pdf_internal_box=\box71
+\l__color_backend_stack_int=\count366
+\l__pdf_internal_box=\box73
 )
 
 LaTeX Warning: Unused global option(s):
@@ -978,17 +1007,17 @@ LaTeX Font Info:    ... okay on input line 17.
 
 (/usr/local/texlive/2021/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count359
-\scratchdimen=\dimen320
-\scratchbox=\box72
-\nofMPsegments=\count360
-\nofMParguments=\count361
-\everyMPshowfont=\toks55
-\MPscratchCnt=\count362
-\MPscratchDim=\dimen321
-\MPnumerator=\count363
-\makeMPintoPDFobject=\count364
-\everyMPtoPDFconversion=\toks56
+\scratchcounter=\count367
+\scratchdimen=\dimen324
+\scratchbox=\box74
+\nofMPsegments=\count368
+\nofMParguments=\count369
+\everyMPshowfont=\toks56
+\MPscratchCnt=\count370
+\MPscratchDim=\dimen325
+\MPnumerator=\count371
+\makeMPintoPDFobject=\count372
+\everyMPtoPDFconversion=\toks57
 ) (/usr/local/texlive/2021/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -1001,6 +1030,7 @@ e
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
+Package caption Info: listings package is loaded.
 Package caption Info: longtable package is loaded.
 
 (/usr/local/texlive/2021/texmf-dist/tex/latex/caption/ltcaption.sty
@@ -1020,7 +1050,7 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count365
+\c@section@level=\count373
 )
 LaTeX Info: Redefining \ref on input line 17.
 LaTeX Info: Redefining \pageref on input line 17.
@@ -1029,6 +1059,7 @@ LaTeX Info: Redefining \nameref on input line 17.
 \@outlinefile=\write4
 \openout4 = `Optimization_Arteaga_Duran.out'.
 
+\c@lstlisting=\count374
 
 [1
 
@@ -1059,21 +1090,27 @@ File: images/single_zone.png Graphic file (type png)
 Package pdftex.def Info: images/single_zone.png  used on input line 26.
 (pdftex.def)             Requested size: 206.77199pt x 163.61084pt.
 ) [2 <./images/single_zone.png>]
-(./sections/section2.tex) [3] (./sections/section3.tex) [4]
-(./sections/section4.tex) [5] (./sections/section5.tex) [6]
-(./Optimization_Arteaga_Duran.aux)
+(./sections/section2.tex
+(/usr/local/texlive/2021/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2020/03/24 1.8d listings language file
+)
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 12.
+) [3]
+(./sections/section3.tex) [4] (./sections/section4.tex) [5]
+(./sections/section5.tex) [6] (./Optimization_Arteaga_Duran.aux)
 Package rerunfilecheck Info: File `Optimization_Arteaga_Duran.out' has not chan
 ged.
 (rerunfilecheck)             Checksum: E771FBA4F31D237D5107FF1912129FCA;892.
  ) 
 Here is how much of TeX's memory you used:
- 27232 strings out of 478994
- 492794 string characters out of 5858184
- 839390 words of memory out of 5000000
- 44173 multiletter control sequences out of 15000+600000
- 410373 words of font info for 51 fonts, out of 8000000 for 9000
+ 29311 strings out of 478994
+ 519560 string characters out of 5858184
+ 1285834 words of memory out of 5000000
+ 46207 multiletter control sequences out of 15000+600000
+ 410879 words of font info for 54 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 107i,11n,105p,1047b,391s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 107i,11n,105p,1047b,1681s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 }</usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><
@@ -1081,12 +1118,14 @@ Here is how much of TeX's memory you used:
 sr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr
 /local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/l
 ocal/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/loca
-l/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local
+l/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsltt10.pfb></usr/loc
+al/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/loca
+l/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local
 /texlive/2021/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on Optimization_Arteaga_Duran.pdf (8 pages, 17162367 bytes).
+Output written on Optimization_Arteaga_Duran.pdf (8 pages, 17192172 bytes).
 PDF statistics:
- 135 PDF objects out of 1000 (max. 8388607)
- 111 compressed objects within 2 object streams
- 19 named destinations out of 1000 (max. 500000)
+ 170 PDF objects out of 1000 (max. 8388607)
+ 144 compressed objects within 2 object streams
+ 41 named destinations out of 1000 (max. 500000)
  79 words of extra memory for PDF output out of 10000 (max. 10000000)
 
