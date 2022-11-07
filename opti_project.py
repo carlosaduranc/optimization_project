@@ -55,8 +55,8 @@ def create_model_onoff(gA, C, R, plot=False):
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(7.5, 7.5), sharex=True)
         ax1.plot(time, temp, label=r'$T_{amb}$')
         ax1.plot(time, Tz, label=r'$T_{z}$')
-        # for i in [293.15, 298.15]:
-        #     ax1.hlines(i, xmin=time[0], xmax=time[-1], lw=0.7, ls='-', color='k', zorder=1)
+        for i in [293.15, 298.15]:
+            ax1.hlines(i, xmin=time[0], xmax=time[-1], lw=0.7, ls='-', color='k', zorder=1)
         ax2.plot(time, Qsun, label=r'$Q_{sun} [W/m^2]$')
         ax2.plot(time, Qg, label=r'$Q_g [W]$')
         ax2.plot(time, Qh, label=r'$Q_h [W]$')
@@ -235,10 +235,10 @@ def mpc_from_model(plot=False):
     Qg[144:] = 100
 
     # constants
-    N = len(time)  # mumber of samples
+    N = len(time)  # number of samples
     delta_t = 3600  # s in 1 hour
 
-    nx = 4  # mumber of states for system
+    nx = 4  # number of states for system
 
     # Initializing optimization problem
     opti = Opti()
@@ -361,10 +361,10 @@ def mpc_lagrangian(T_start, plot=False):
     Qg[144:] = 100
 
     # constants
-    N = len(time)  # mumber of samples
+    N = len(time)  # number of samples
     delta_t = 3600  # s in 1 hour
 
-    nx = 4  # mumber of states for system
+    nx = 4  # number of states for system
 
     # Initializing optimization problem
     opti = Opti()
@@ -489,7 +489,7 @@ C_guess = 1000000  # J/K
 R_guess = 1  # K/W
 
 # Loading true zone temperature and model zone temperature
-[Tz_true, time_true] = create_model_onoff(gA=gA_true, C=C_true, R=R_true, plot=False)
+[Tz_true, time_true] = create_model_onoff(gA=gA_true, C=C_true, R=R_true, plot=True)
 [Tz_guess, time_guess] = create_model_onoff(gA=gA_guess, C=C_guess, R=R_guess, plot=False)
 
 # Comparing models. Extracting error function to be minimized
