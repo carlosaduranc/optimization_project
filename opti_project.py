@@ -1,7 +1,5 @@
 from matplotlib import pyplot as plt
 from pandas import *
-import numpy as np
-from rockit import *
 from casadi import *
 
 
@@ -53,15 +51,16 @@ def create_model_onoff(gA, C, R, plot=False):
 
     if plot:
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(7.5, 7.5), sharex=True)
-        ax1.plot(time, temp, label=r'$T_{amb}$')
+        ax1.plot(time, temp, label=r'$T_{a}$')
         ax1.plot(time, Tz, label=r'$T_{z}$')
         for i in [293.15, 298.15]:
             ax1.hlines(i, xmin=time[0], xmax=time[-1], lw=0.7, ls='-', color='k', zorder=1)
-        ax2.plot(time, Qsun, label=r'$Q_{sun} [W/m^2]$')
-        ax2.plot(time, Qg, label=r'$Q_g [W]$')
-        ax2.plot(time, Qh, label=r'$Q_h [W]$')
+        ax2.plot(time, Qsun, label=r'$\dot{Q}_{sun} [W/m^2]$')
+        ax2.plot(time, Qg, label=r'$\dot{Q}_{g} [W]$')
+        ax2.plot(time, Qh, label=r'$\dot{Q}_{h} [W]$')
         ax3.plot(time, cost)
         ax3.hlines(cost[-1], xmin=time[0], xmax=time[-1], lw=0.7, ls='--', color='b', zorder=1)
+        ax3.text(x=time[1], y=cost[-1]+1.02, s=str(round(cost[-1], 2)) + '€')
 
         for i in range(6):
             ax1.vlines(time[24 * (i + 1)], ymin=-100, ymax=1000, lw=0.7, ls='--', color='k', zorder=1)
@@ -85,15 +84,13 @@ def create_model_onoff(gA, C, R, plot=False):
 
         ax1.set_ylabel('Temperature [K]')
         ax2.set_ylabel('Heat')
-        ax3.set_ylabel('Running cost [Euro]')
+        ax3.set_ylabel(r'Running cost [€]')
 
         ax3.set_xticks([time[24 * (i + 1)] for i in range(6)])
         ax3.set_xticklabels(['17/10', '18/10', '19/10', '20/10', '21/10', '22/10'])
 
         ax1.legend(loc='upper right')
         ax2.legend(loc='upper right')
-
-        ax1.set_title("traditional operation for one radiator")
 
         plt.show()
 
@@ -290,15 +287,16 @@ def mpc_from_model(plot=False):
             cost[i + 1] = cost[i] + rate * Qh_mpc[i] * 0.001
 
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(7.5, 7.5), sharex=True)
-        ax1.plot(time, temp, label=r'$T_{amb}$')
+        ax1.plot(time, temp, label=r'$T_{a}$')
         ax1.plot(time, Tz_mpc, label=r'$T_{z}$')
         for i in [293.15, 298.15]:
             ax1.hlines(i, xmin=time[0], xmax=time[-1], lw=0.7, ls='-', color='k', zorder=1)
-        ax2.plot(time, Qsun, label=r'$Q_{sun} [W/m^2]$')
-        ax2.plot(time, Qg, label=r'$Q_g [W]$')
-        ax2.plot(time, Qh_mpc, label=r'$Q_h [W]$')
+        ax2.plot(time, Qsun, label=r'$\dot{Q}_{sun} [W/m^2]$')
+        ax2.plot(time, Qg, label=r'$\dot{Q}_{g} [W]$')
+        ax2.plot(time, Qh_mpc, label=r'$\dot{Q}_{h} [W]$')
         ax3.plot(time, cost)
         ax3.hlines(cost[-1], xmin=time[0], xmax=time[-1], lw=0.7, ls='--', color='b', zorder=1)
+        ax3.text(x=time[1], y=cost[-1] + 1.02, s=str(round(cost[-1], 2)) + '€')
 
         for i in range(6):
             ax1.vlines(time[24 * (i + 1)], ymin=-100, ymax=1000, lw=0.7, ls='--', color='k', zorder=1)
@@ -322,7 +320,7 @@ def mpc_from_model(plot=False):
 
         ax1.set_ylabel('Temperature [K]')
         ax2.set_ylabel('Heat')
-        ax3.set_ylabel('Running cost [Euro]')
+        ax3.set_ylabel('Running cost [€]')
 
         ax3.set_xticks([time[24 * (i + 1)] for i in range(6)])
         ax3.set_xticklabels(['17/10', '18/10', '19/10', '20/10', '21/10', '22/10'])
@@ -431,15 +429,16 @@ def mpc_lagrangian(T_start, plot=False):
             cost[i + 1] = cost[i] + rate * Qh_mpc[i] * 0.001
 
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(7.5, 7.5), sharex=True)
-        ax1.plot(time, temp, label=r'$T_{amb}$')
+        ax1.plot(time, temp, label=r'$T_{a}$')
         ax1.plot(time, Tz_mpc, label=r'$T_{z}$')
         for i in [293.15, 298.15]:
             ax1.hlines(i, xmin=time[0], xmax=time[-1], lw=0.7, ls='-', color='k', zorder=1)
-        ax2.plot(time, Qsun, label=r'$Q_{sun} [W/m^2]$')
-        ax2.plot(time, Qg, label=r'$Q_g [W]$')
-        ax2.plot(time, Qh_mpc, label=r'$Q_h [W]$')
+        ax2.plot(time, Qsun, label=r'$\dot{Q}_{sun} [W/m^2]$')
+        ax2.plot(time, Qg, label=r'$\dot{Q}_{g} [W]$')
+        ax2.plot(time, Qh_mpc, label=r'$\dot{Q}_{h} [W]$')
         ax3.plot(time, cost)
         ax3.hlines(cost[-1], xmin=time[0], xmax=time[-1], lw=0.7, ls='--', color='b', zorder=1)
+        ax3.text(x=time[1], y=cost[-1] + 1.02, s=str(round(cost[-1], 2)) + '€')
 
         for i in range(6):
             ax1.vlines(time[24 * (i + 1)], ymin=-100, ymax=1000, lw=0.7, ls='--', color='k', zorder=1)
@@ -463,7 +462,7 @@ def mpc_lagrangian(T_start, plot=False):
 
         ax1.set_ylabel('Temperature [K]')
         ax2.set_ylabel('Heat')
-        ax3.set_ylabel('Running cost [Euro]')
+        ax3.set_ylabel('Running cost [€]')
 
         ax3.set_xticks([time[24 * (i + 1)] for i in range(6)])
         ax3.set_xticklabels(['17/10', '18/10', '19/10', '20/10', '21/10', '22/10'])
@@ -471,7 +470,7 @@ def mpc_lagrangian(T_start, plot=False):
         ax1.legend(loc='upper right')
         ax2.legend(loc='upper right')
 
-        ax1.set_title(r"MPC operation for one radiator. Minimize $\sum(Q_h + \mu_i \cdot g_i (x))^2$")
+        ax1.set_title(r"MPC operation for one radiator. Minimize $\sum(\dot{Q}_{h} + \mu_i \cdot g_i (x))^2$")
 
         plt.show()
 
