@@ -1,3 +1,65 @@
 \section{Trajectory Optimization}
 \label{sec:trajectory_optimization}
 
+\begin{python}
+def minimize_function(Tz_a):
+    N = len(Tz_a)
+    delta_t = 3600  # s
+
+    data = read_csv("leuven_october2022_16-22.csv")
+
+    # Time dependent parameters
+    time = data['time'].tolist()
+    temp = data['temp'].tolist()  # deg C
+    for i in range(len(temp)):
+        temp[i] = temp[i] + 273.15  # deg K
+
+    Qg = np.zeros(len(time))
+    Qh = np.zeros(len(time))
+    for i in range(5):
+        Qg[0 + 24 * (i + 1):7 + 24 * (i + 1)] = 100  # W. Human heat 
+        Qg[18 + 24 * (i + 1):24 + 24 * (i + 1)] = 100 
+
+        Qh[0 + 24 * (i + 1):6 + 24 * (i + 1)] = 1000  # W. Heater
+        Qh[19 + 24 * (i + 1):24 + 24 * (i + 1)] = 1000
+
+    Qg[0:24] = 100
+    Qg[144:] = 100
+    Qh[0:24] = 1000
+    Qh[144:] = 1000
+
+    Qsun = data['solrad'].tolist()  # W/m2
+
+    # Initiating optimization variables
+    opti = Opti()
+    R = opti.variable()
+    C = opti.variable()
+    gA = opti.variable()
+
+    p = vertcat(R, C, gA)  # parameter vector
+
+    Tz = 293.15  # Initial temperature guess
+
+    f = 0   # Error function initial value
+
+    for i in range(N):
+        f = f + (Tz - Tz_a[i]) ** 2
+        Tz_next = delta_t * ((Qsun[i] * gA + Qh[i] + Qg[i]) / C + (temp[i] - Tz) / (R * C)) + Tz
+        Tz = Tz_next
+        
+    f = f + (Tz - Tz_a[N - 1]) ** 2
+
+    opti.minimize(f)
+
+    opti.solver('ipopt')
+
+    # filling initial guess parameter vector
+    p_hat = vertcat(R_guess, C_guess, gA_guess)
+
+    opti.set_initial(p, p_hat)
+
+    sol = opti.solve()
+
+    return sol.value(p)
+\end{python}
+

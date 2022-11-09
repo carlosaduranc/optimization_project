@@ -3,7 +3,7 @@
 \contentsline {subsection}{\numberline {1.2}Zone Model}{2}{subsection.1.2}%
 \contentsline {section}{\numberline {2}Problem Statement}{5}{section.2}%
 \contentsline {section}{\numberline {3}Trajectory Optimization}{6}{section.3}%
-\contentsline {section}{\numberline {4}Model Predictive Control}{7}{section.4}%
-\contentsline {section}{\numberline {5}Conclusions}{8}{section.5}%
-\contentsline {section}{\numberline {A}Appendix}{9}{appendix.A}%
-\contentsline {section}{References}{10}{dummy.1}%
+\contentsline {section}{\numberline {4}Model Predictive Control}{8}{section.4}%
+\contentsline {section}{\numberline {5}Conclusions}{9}{section.5}%
+\contentsline {section}{\numberline {A}Appendix A}{10}{appendix.A}%
+\contentsline {section}{References}{15}{dummy.1}%
