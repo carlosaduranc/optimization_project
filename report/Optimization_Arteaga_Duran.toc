@@ -1,9 +1,8 @@
 \contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
 \contentsline {subsection}{\numberline {1.1}Thermal Zone}{1}{subsection.1.1}%
 \contentsline {subsection}{\numberline {1.2}Zone Model}{2}{subsection.1.2}%
-\contentsline {section}{\numberline {2}Problem Statement}{5}{section.2}%
-\contentsline {section}{\numberline {3}Trajectory Optimization}{6}{section.3}%
-\contentsline {section}{\numberline {4}Model Predictive Control}{8}{section.4}%
-\contentsline {section}{\numberline {5}Conclusions}{9}{section.5}%
-\contentsline {section}{\numberline {A}Appendix A}{10}{appendix.A}%
-\contentsline {section}{References}{15}{dummy.1}%
+\contentsline {section}{\numberline {2}Trajectory Optimization}{5}{section.2}%
+\contentsline {section}{\numberline {3}Model Predictive Control}{7}{section.3}%
+\contentsline {section}{\numberline {4}Conclusions}{8}{section.4}%
+\contentsline {section}{\numberline {A}Appendix A}{9}{appendix.A}%
+\contentsline {section}{References}{14}{dummy.1}%
