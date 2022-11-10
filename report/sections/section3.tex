@@ -1,6 +1,40 @@
 \section{Trajectory Optimization}
 \label{sec:trajectory_optimization}
 
+A trajectory optimization is a set of mathematical techniques, which is used to find an ideal or the best behavior for a dynamic system, or also known as optimal trajectory. In order to describe mathematically what is understood as the "best" trajectory, an \emph{objective function} should be defined \cite{kelly2017introduction}. Moreover, the optimization solver adjust a set of \emph{decision variables} in order to minimize the objective function.\\
+In the present section, it is described the process to identify the optimal values of the decision variables, with the objective of fitting the dynamics of the thermal system, into a model which is considered to be correct. 
+
+\subsection{Objective function}
+As a first step, the temperature $T_z$, obtained with a finite difference approximation of the Equation \ref{eq:energy_balance}, it is considered to be the ideal model of the room temperature, assuming that the values of $C_z$, $R_w$ and $gA$ presented in Table \ref{tab:constants} are correct. The discretization processes is developed in the next equations
+
+\begin{align}
+C_z \cdot \frac{T_{z,i+1}-T_{z,i}}{\Delta t} &= \dot{Q}_{h,i} + gA \cdot \dot{Q}_{sun, i} + \dot{Q}_{g,i}  + \frac{T_{z,i}-T_{a,i}}{R_w}\\
+T_{z,i+1} &= \Delta t \cdot \left( \frac{\dot{Q}_{h,i} + gA \cdot \dot{Q}_{sun, i} + \dot{Q}_{g,i}}{C_z} + \frac{T_{z,i}-T_{a,i}}{R_w \cdot C_z} \right) + T_{z,i}
+\label{eq:finite_difference}
+\end{align}
+The value $\Delta t = 3600s$ was selected based on the sampling time of historical data.
+
+Subsequently, a model to optimize is presented, with $C_z$, $R_w$ and $gA$ selected as the decision variables. For that, an initial value of each, is proposed to be relatively close to the true values, with the intention of making the algorithm to converge faster and avoiding it to get stuck in local minima. The numerical values used as initial guess are shown in Table \ref{tab:initial_guess}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c}
+Variable & Value\\
+\hline
+\hline
+$C_z$ & 1000000 J/K\\
+$R_w$ & 1 K/W\\
+$gA$ & $0.1\cdot1$ m$^2$ 
+\end{tabular}
+\caption{Initial guess of the decision variables.}
+\label{tab:initial_guess}
+\end{table}
+
+To do: Describe the cost function/L2-norm.
+\begin{equation}
+\underset{C_z}{\text{minimize}} \sum_{i=1}^{N} (T_{z,i}-\hat{T}_{z,i})^2 
+\end{equation}
+In which $N$ is the number of samples, $\hat{T}_{z,i}$ is the the computed value to be updated by the optimization solver, and $T_{z,i}$ is the real value. 
 \begin{python}
 def minimize_function(Tz_a):
     N = len(Tz_a)
@@ -62,4 +96,5 @@ def minimize_function(Tz_a):
 
     return sol.value(p)
 \end{python}
+
 
