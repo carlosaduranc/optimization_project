@@ -509,5 +509,3 @@ print('\nRMSE: ', 1 / len(error_opt) * np.sum(error_opt), '\n\n\n\n')
 
 # Minimizing energy consumption using lagrangian form
 [heat_lag, temperature_lag] = mpc_lagrangian(T_start=293.15, plot=True)
-
-print(R_opt, C_opt, gA_opt)
