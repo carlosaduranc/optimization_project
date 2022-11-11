@@ -4,6 +4,21 @@ Following the identification of the model done in section \ref{sec:trajectory_op
 
 \subsection{Primal MPC}
 \label{subsec:primal_mpc}
+As a first step, the calculated constants from section \ref{sec:trajectory_optimization} were used to develop the model. 
+
+\begin{equation}
+\underset{\dot{Q}_h}{\text{min}} \hspace{1em} \sum_{i=1}^{N} \left(\dot{Q}_{h,i}\right)^2
+\end{equation}
+\begin{equation}
+\text{s.t.}  \hspace{1em} T_{z,i+1} - \Delta t \left( \frac{\dot{Q}_{h,i} + gA \cdot \dot{Q}_{sun, i} + \dot{Q}_{g,i}}{C_z} + \frac{T_{z,i}-T_{a,i}}{R_w \cdot C_z} \right) - T_{z,i} =0
+\end{equation}
+\begin{align}
+T_{z,i} - 298.15 &\leq 0 \hspace{2em} \forall i \in \text{occupied}\\[0.5em]
+293.15 - T_{z,i} &\leq 0 \hspace{2em} \forall i \in \text{occupied}\\[0.5em]
+\dot{Q}_{h,i} - 1000 &\leq 0\\[0.5em]
+-\dot{Q}_{h,i} &\leq 0
+\end{align}
+
 
 \subsection{Lagrangian MPC}
 \label{subsec:lagrangian_mpc}
