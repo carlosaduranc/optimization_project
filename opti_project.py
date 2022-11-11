@@ -107,23 +107,24 @@ def compare_models(Tz_a, Tz_b, time, plot=False):
     rmse = 1 / len(e) * sum(e)
 
     if plot:
-        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(7.5, 7.5), sharex=True)
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(7.5, 5), sharex=True)
 
         ax1.plot(time, Tz_a, label='Actual')
         ax1.plot(time, Tz_b, label='Model')
         ax2.plot(time, e, label='Error')
         ax2.hlines(rmse, xmin=time[0], xmax=time[-1], lw=1, ls='-', color='k', zorder=1, label='RMSE')
+        ax2.text(x=time[1], y=rmse*1.01, s='RMSE: ' + str(round(rmse)) + r'$K^2$')
 
         for i in range(6):
             ax1.vlines(time[24 * (i + 1)], ymin=-100, ymax=1000, lw=0.7, ls='--', color='k', zorder=1)
-            ax2.vlines(time[24 * (i + 1)], ymin=-100, ymax=2000, lw=0.7, ls='--', color='k', zorder=1)
+            ax2.vlines(time[24 * (i + 1)], ymin=-100, ymax=50000, lw=0.7, ls='--', color='k', zorder=1)
 
         ax1.set_xticks([])
 
         ax1.set_xlim([time[0], time[-1]])
         ax2.set_xlim([time[0], time[-1]])
 
-        ax1.set_ylim([285, 315])
+        ax1.set_ylim([285, max(Tz_b)*1.01])
         ax2.set_ylim([0, max(e)*1.01])
 
         ax1.set_ylabel('Temperature [K]')
@@ -488,11 +489,11 @@ C_guess = 1000000  # J/K
 R_guess = 1  # K/W
 
 # Loading true zone temperature and model zone temperature
-[Tz_true, time_true] = create_model_onoff(gA=gA_true, C=C_true, R=R_true, plot=True)
+[Tz_true, time_true] = create_model_onoff(gA=gA_true, C=C_true, R=R_true, plot=False)
 [Tz_guess, time_guess] = create_model_onoff(gA=gA_guess, C=C_guess, R=R_guess, plot=False)
 
 # Comparing models. Extracting error function to be minimized
-[error, time_error] = compare_models(Tz_a=Tz_true, Tz_b=Tz_guess, time=time_true, plot=False)
+[error, time_error] = compare_models(Tz_a=Tz_true, Tz_b=Tz_guess, time=time_true, plot=True)
 
 # Minimizing error function. Output optimal parameters
 [R_opt, C_opt, gA_opt] = minimize_function(Tz_a=Tz_true)
