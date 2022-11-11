@@ -113,7 +113,7 @@ def compare_models(Tz_a, Tz_b, time, plot=False):
         ax1.plot(time, Tz_b, label='Model')
         ax2.plot(time, e, label='Error')
         ax2.hlines(rmse, xmin=time[0], xmax=time[-1], lw=1, ls='-', color='k', zorder=1, label='RMSE')
-        ax2.text(x=time[1], y=rmse*1.01, s='RMSE: ' + str(round(rmse)) + r'$K^2$')
+        ax2.text(x=time[1], y=rmse*1.01, s='RMSE: ' + str(format(rmse, '.2E')) + r'$K^2$')
 
         for i in range(6):
             ax1.vlines(time[24 * (i + 1)], ymin=-100, ymax=1000, lw=0.7, ls='--', color='k', zorder=1)
@@ -493,14 +493,14 @@ R_guess = 1  # K/W
 [Tz_guess, time_guess] = create_model_onoff(gA=gA_guess, C=C_guess, R=R_guess, plot=False)
 
 # Comparing models. Extracting error function to be minimized
-[error, time_error] = compare_models(Tz_a=Tz_true, Tz_b=Tz_guess, time=time_true, plot=True)
+[error, time_error] = compare_models(Tz_a=Tz_true, Tz_b=Tz_guess, time=time_true, plot=False)
 
 # Minimizing error function. Output optimal parameters
 [R_opt, C_opt, gA_opt] = minimize_function(Tz_a=Tz_true)
 
 # Loading model with calculated variables and comparing to true model
 [Tz_opt, time_opt] = create_model_onoff(gA=gA_opt, C=C_opt, R=R_opt, plot=False)
-[error_opt, time_error_opt] = compare_models(Tz_a=Tz_true, Tz_b=Tz_opt, time=time_true, plot=False)
+[error_opt, time_error_opt] = compare_models(Tz_a=Tz_true, Tz_b=Tz_opt, time=time_true, plot=True)
 
 print('\nRMSE: ', 1 / len(error_opt) * np.sum(error_opt), '\n\n\n\n')
 
