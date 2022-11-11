@@ -505,7 +505,7 @@ R_guess = 1  # K/W
 print('\nRMSE: ', 1 / len(error_opt) * np.sum(error_opt), '\n\n\n\n')
 
 # Minimizing energy consumption (TRIVIAL)
-[heat, temperature] = mpc_from_model(plot=True)
+[heat, temperature] = mpc_from_model(plot=False)
 
 # Minimizing energy consumption using lagrangian form
 [heat_lag, temperature_lag] = mpc_lagrangian(T_start=293.15, plot=True)
