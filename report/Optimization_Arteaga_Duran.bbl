@@ -15,4 +15,10 @@ NOOA.
 Kunstmann.
 \newblock Weather.
 
+\bibitem{kelly2017introduction}
+Matthew Kelly.
+\newblock An introduction to trajectory optimization: How to do your own direct
+  collocation.
+\newblock {\em SIAM Review}, 59(4):849--904, 2017.
+
 \end{thebibliography}

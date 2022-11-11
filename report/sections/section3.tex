@@ -2,19 +2,25 @@
 \label{sec:trajectory_optimization}
 
 A trajectory optimization is a set of mathematical techniques, which is used to find an ideal or the best behavior for a dynamic system, or also known as optimal trajectory. In order to describe mathematically what is understood as the "best" trajectory, an \emph{objective function} should be defined \cite{kelly2017introduction}. Moreover, the optimization solver adjust a set of \emph{decision variables} in order to minimize the objective function.\\
-In the present section, it is described the process to identify the optimal values of the decision variables, with the objective of fitting the dynamics of the thermal system, into a model which is considered to be correct. 
+In the present section, it is described the process to identify the optimal values of the decision variables, with the objective of fitting the dynamics of the thermal system into a model which is considered to be correct. 
 
 \subsection{Objective function}
-As a first step, the temperature $T_z$, obtained with a finite difference approximation of the Equation \ref{eq:energy_balance}, it is considered to be the ideal model of the room temperature, assuming that the values of $C_z$, $R_w$ and $gA$ presented in Table \ref{tab:constants} are correct. The discretization processes is developed in the next equations
+As a first step, the temperature $T_z$, obtained with a finite difference approximation of the Equation \ref{eq:energy_balance}, it is considered to be the ground truth of the room temperature, assuming that the values of $C_z$, $R_w$ and $gA$ presented in Table \ref{tab:constants} are correct. The discretization processes is developed in the next equation
 
-\begin{align}
-C_z \cdot \frac{T_{z,i+1}-T_{z,i}}{\Delta t} &= \dot{Q}_{h,i} + gA \cdot \dot{Q}_{sun, i} + \dot{Q}_{g,i}  + \frac{T_{z,i}-T_{a,i}}{R_w}\\
-T_{z,i+1} &= \Delta t \cdot \left( \frac{\dot{Q}_{h,i} + gA \cdot \dot{Q}_{sun, i} + \dot{Q}_{g,i}}{C_z} + \frac{T_{z,i}-T_{a,i}}{R_w \cdot C_z} \right) + T_{z,i}
-\label{eq:finite_difference}
-\end{align}
-The value $\Delta t = 3600s$ was selected based on the sampling time of historical data.
+\begin{equation}
+T_{z,i+1} = \Delta t \cdot \left( \frac{\dot{Q}_{h,i} + gA \cdot \dot{Q}_{sun, i} + \dot{Q}_{g,i}}{C_z} + \frac{T_{z,i}-T_{a,i}}{R_w \cdot C_z} \right) + T_{z,i}
+\label{eq:finite_difference_real}
+\end{equation}
+The value $\Delta t = 3600s$ was selected based on the sampling time of historical data.\\
 
-Subsequently, a model to optimize is presented, with $C_z$, $R_w$ and $gA$ selected as the decision variables. For that, an initial value of each, is proposed to be relatively close to the true values, with the intention of making the algorithm to converge faster and avoiding it to get stuck in local minima. The numerical values used as initial guess are shown in Table \ref{tab:initial_guess}
+Subsequently, a model $\tilde{T_z}$ is generated as it is shown in Equation \ref{eq:finite_difference_model}. This model is dependent on the variable vector $\mathbf{p} = \begin{bmatrix}
+\tilde{C_z} & \tilde{R_w} & \tilde{gA} \end{bmatrix}^\top$, which its numerical value will be updated by the optimization solver. For that, an initial value of each is proposed to be relatively close to the ground truth, with the intention of making the algorithm to converge faster and avoiding it to get stuck in local minima. The numerical values used as initial guess are shown in Table \ref{tab:initial_guess}
+
+\begin{equation}
+\tilde{T}_{z,i+1} = \Delta t \cdot \left( \frac{\dot{Q}_{h,i} + \tilde{gA} \cdot \dot{Q}_{sun, i} + \dot{Q}_{g,i}}{\tilde{C}_z} + \frac{\tilde{T}_{z,i}-T_{a,i}}{\tilde{R}_w \cdot \tilde{C}_z} \right) + \tilde{T}_{z,i}
+\label{eq:finite_difference_model}
+\end{equation}
+
 
 \begin{table}[H]
 \centering
@@ -22,19 +28,27 @@ Subsequently, a model to optimize is presented, with $C_z$, $R_w$ and $gA$ selec
 Variable & Value\\
 \hline
 \hline
-$C_z$ & 1000000 J/K\\
-$R_w$ & 1 K/W\\
-$gA$ & $0.1\cdot1$ m$^2$ 
+$\tilde{C}_z$ & 1000000 J/K\\
+$\tilde{R}_w$ & 1 K/W\\
+$\tilde{gA}$ & $0.1\cdot1$ m$^2$ 
 \end{tabular}
 \caption{Initial guess of the decision variables.}
 \label{tab:initial_guess}
 \end{table}
 
-To do: Describe the cost function/L2-norm.
+As a next step, the objective function, or also known as \emph{cost function} is defined, it will determine how well the model $\tilde{T}_{z}$ is performing, using as a reference the ground truth model $T_{z}$. The Mean Squared Error (MSE) is perhaps the simplest and most common cost function, and the optimizer will try to minimize its value. To calculate it, the difference between the correct value $T_{z}$ and the model $\tilde{T}_{z}$ is taken for each sample, and averaging it across the whole set of samples $N$. The mathematical definition of this trajectory optimization problem is presented in Equation \ref{Eq:Cost_function}
 \begin{equation}
-\underset{C_z}{\text{minimize}} \sum_{i=1}^{N} (T_{z,i}-\hat{T}_{z,i})^2 
+\underset{\mathbf{p}}{\text{minimize}}\,\,\,\frac{1}{N}\sum_{i=1}^{N} (T_{z,i}-\tilde{T}_{z,i}(\mathbf{p}))^2 
+\label{Eq:Cost_function}
 \end{equation}
-In which $N$ is the number of samples, $\hat{T}_{z,i}$ is the the computed value to be updated by the optimization solver, and $T_{z,i}$ is the real value. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.75]{images/error_actualvsmodel.png}
+\caption{Predicted temperature model $\tilde{T}_{z}$ vs Actual temperature $T_z$ }
+\label{fig:Model Error}
+\end{figure}
+
 \begin{python}
 def minimize_function(Tz_a):
     N = len(Tz_a)
