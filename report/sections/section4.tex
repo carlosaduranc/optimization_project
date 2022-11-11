@@ -4,21 +4,69 @@ Following the identification of the model done in section \ref{sec:trajectory_op
 
 \subsection{Primal MPC}
 \label{subsec:primal_mpc}
-As a first step, the calculated constants from section \ref{sec:trajectory_optimization} were used to develop the model. 
+As a first step, the calculated constants from section \ref{sec:trajectory_optimization} were used to develop the model. In order to ensure a proper MPC development, model state and control variables were determined. For this, the zone temperature $T_z$, ambient temperature $T_a$, solar radiation $\dot{Q}_{sun}$ and the heat input due to occupancy $\dot{Q}_g$ were taken as the system states $\boldsymbol{X}$. Since the goal of the MPC is the optimal deployment of the zone heating $\dot{Q}_{h}$, it was taken as the control variable $U$. The following code shows how these were expressed.
+
+\begin{python}
+    # constants
+    N = len(time)  # number of samples
+    delta_t = 3600  # s in 1 hour
+    R = R_opt
+    C = C_opt
+    gA = gA_opt
+
+    nx = 4  # number of states for system
+
+    # Initializing optimization problem
+    opti = Opti()
+
+    X = opti.variable(nx, N + 1)  # states: Tz [K], Ta [K], Qsun [W/m2], Qg [W]. Multiple shooting
+
+    U = opti.variable(N, 1)  # control variable: Qh [W]
+\end{python}
+
+Here, it can be seen that the state variable vector is initialized as a 4 by N+1 vector. This is since the transcription method used during this optimization is multiple shooting, which requires an additional state instance when compared to the control vector.\\
+
+Moreover, the state vector was filled by means of a for-loop, following equation \ref{eq:finite_difference} and populating the rest of the states from the data collected in appendix \ref{appendix}.
+\begin{python}
+# Setting shooting constraints
+for i in range(N - 1):
+    opti.subject_to(X[0, i+1] == delta_t * ((X[2,i] * gA + U[i] + X[3,i])/C + (X[1,i] - X[0,i])/(R*C)) + X[0,i])
+    opti.subject_to(X[1, i + 1] == temp[i + 1])
+    opti.subject_to(X[2, i + 1] == Qsun[i + 1])
+    opti.subject_to(X[3, i + 1] == Qg[i + 1])
+\end{python}
+
+Here, the first state is fully determined as a function of the control values, allowing for the optimization of its deployment. Additionally, the first instance for all states is purposefully skipped since the initial conditions are set at a later stage by means of the initial guess vector $\boldsymbol{X}_0$.\\
+
+Next, the matter of constraints is considered. For this, first the physical limits for the radiator are stated by setting the control variables to be within 0 and 1000 W (its maximal heating output). Furthermore, the thermal comfort limits were placed for the zone temperature for instances on which someone is occupying the zone. This allows for the reduction of heating output during non-occupation times, leading to lower electrical costs. For this, a typical occupational time range was used on which there is one person inside the zone during the entire weekend and the zone is not occupied in the weekdays from 07:00 to 18:00.
+
+\begin{python}
+# setting bounded constraints (temp range for the zone whenever someone is home)
+opti.subject_to(opti.bounded(293.15, X[0, 0:24], 298.15))  # weekend
+opti.subject_to(opti.bounded(293.15, X[0, 144:], 298.15))  # weekend
+for i in range(6):  # weekdays
+   opti.subject_to(opti.bounded(293.15, X[0,0+24*(i+1):7+24*(i+1)], 298.15))
+   opti.subject_to(opti.bounded(293.15, X[0,18+24*(i+1):24+24*(i+1)], 298.15))
+
+# bounded constraints for max and min power output for the radiator
+opti.subject_to(opti.bounded(0, U, 1000))
+\end{python}
+
 
 \begin{equation}
-\underset{\dot{Q}_h}{\text{min}} \hspace{1em} \sum_{i=1}^{N} \left(\dot{Q}_{h,i}\right)^2
+{\text{minimize}} \hspace{1em} \sum_{i=1}^{N} \left(\dot{Q}_{h,i}\right)^2
 \end{equation}
 \begin{equation}
-\text{s.t.}  \hspace{1em} T_{z,i+1} - \Delta t \left( \frac{\dot{Q}_{h,i} + gA \cdot \dot{Q}_{sun, i} + \dot{Q}_{g,i}}{C_z} + \frac{T_{z,i}-T_{a,i}}{R_w \cdot C_z} \right) - T_{z,i} =0
+\text{subject to}  \hspace{1em} T_{z,i+1} - \Delta t \left( \frac{\dot{Q}_{h,i} + gA \cdot \dot{Q}_{sun, i} + \dot{Q}_{g,i}}{C_z} + \frac{T_{z,i}-T_{a,i}}{R_w \cdot C_z} \right) - T_{z,i} =0
 \end{equation}
+\vspace{-0.5em}
 \begin{align}
+\left[T_{z,0}, T_{a,0}, \dot{Q}_{sun,0}, \dot{Q}_{g,0}\right]^{\top}  - \boldsymbol{X}_0 &=  0 \\[0.5em]
 T_{z,i} - 298.15 &\leq 0 \hspace{2em} \forall i \in \text{occupied}\\[0.5em]
 293.15 - T_{z,i} &\leq 0 \hspace{2em} \forall i \in \text{occupied}\\[0.5em]
 \dot{Q}_{h,i} - 1000 &\leq 0\\[0.5em]
 -\dot{Q}_{h,i} &\leq 0
 \end{align}
-
 
 \subsection{Lagrangian MPC}
 \label{subsec:lagrangian_mpc}
