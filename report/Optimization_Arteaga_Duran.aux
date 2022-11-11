@@ -2,10 +2,13 @@
 \providecommand\hyper@newdestlabel[2]{}
 \providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
 \HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
 \global\let\oldnewlabel\newlabel
 \gdef\newlabel#1#2{\newlabelxx{#1}#2}
 \gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
 \AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
 \let\newlabel\oldnewlabel
 \fi}
 \fi}
@@ -46,8 +49,14 @@
 \newlabel{tab:initial_guess}{{3}{5}{Initial guess of the decision variables.\relax }{table.caption.7}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Model Predictive Control}{8}{section.3}\protected@file@percent }
 \newlabel{sec:mpc}{{3}{8}{Model Predictive Control}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Primal MPC}{8}{subsection.3.1}\protected@file@percent }
+\newlabel{subsec:primal_mpc}{{3.1}{8}{Primal MPC}{subsection.3.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Lagrangian MPC}{8}{subsection.3.2}\protected@file@percent }
+\newlabel{subsec:lagrangian_mpc}{{3.2}{8}{Lagrangian MPC}{subsection.3.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Conclusions}{9}{section.4}\protected@file@percent }
 \newlabel{sec:conclusions}{{4}{9}{Conclusions}{section.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Appendix A}{10}{appendix.A}\protected@file@percent }
+\newlabel{appendix}{{A}{10}{Appendix A}{appendix.A}{}}
 \gdef \LT@i {\LT@entry 
     {1}{113.32674pt}\LT@entry 
     {1}{38.51085pt}\LT@entry 
@@ -57,8 +66,6 @@
     {1}{38.90251pt}\LT@entry 
     {1}{35.89977pt}\LT@entry 
     {1}{43.14552pt}}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Appendix A}{10}{appendix.A}\protected@file@percent }
-\newlabel{appendix}{{A}{10}{Appendix A}{appendix.A}{}}
 \bibdata{references.bib}
 \bibcite{drgovna2020all}{1}
 \bibcite{nooa_2022}{2}
