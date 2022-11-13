@@ -21,4 +21,11 @@ Matthew Kelly.
   collocation.
 \newblock {\em SIAM Review}, 59(4):849--904, 2017.
 
+\bibitem{Andersson2018}
+Joel A~E Andersson, Joris Gillis, Greg Horn, James~B Rawlings, and Moritz
+  Diehl.
+\newblock {CasADi} -- {A} software framework for nonlinear optimization and
+  optimal control.
+\newblock {\em Mathematical Programming Computation}, In Press, 2018.
+
 \end{thebibliography}

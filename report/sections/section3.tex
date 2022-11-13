@@ -42,53 +42,42 @@ As a next step, the objective function, or also known as \emph{cost function} is
 \label{Eq:Cost_function}
 \end{equation}
 
+\subsection{Trajectory optimization solver}
+Once the problem has been defined formally, a general inspection of the model $\tilde{T}_{z}$ with the initial guess was performed. In Figure \ref{fig:Model Error}, it can be observed the error between both, the model to optimize and the actual room temperature. The goal of the optimizer is to find the optimal values for the decision variable $\mathbf{p}$, in order to make the cost function equal to 0, its minimum value \footnote{The Mean Squared Error will never be negative, since the errors are always being squared}. In other words, the graph in orange will track the one in blue. 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.75]{images/error_actualvsmodel.png}
 \caption{Predicted temperature model $\tilde{T}_{z}$ vs Actual temperature $T_z$ }
 \label{fig:Model Error}
 \end{figure}
+The tool used to solve this optimization problem was CasADi, which is an open-source software available for Python that allows numerical optimization and optimal control \cite{Andersson2018}. In the next lines, a brief explanation of the code is given, thereafter an interpretation of the results is shown. To begin, the function $\mathsf{minimize\_function}$ is defined. The first lines are used to create different pythons lists, to save the ambient temperature $T_a$, heat from solar radiation $\dot{Q}_{sun}$ and time. All these were retrieved from historical data. Next, two new arrays were created for the heat input from occupancy $\dot{Q}_{g}$, and for the heat from radiator $\dot{Q}_{h}$. Their values were assigned based on the assumptions stated on section \ref{subsec:zone_model}.
+
+Subsequently, the optimization problem is presented in the next code snippet, and a brief explanation is given as follows:
+\begin{enumerate}
+  \itemsep0em 
+  \item The collection class $\mathsf{Opti()}$ is initialized.
+  \item Three decision variables (all of them scalar) are declared and vertically concatenate into the vector $\mathbf{p}$.
+  \item The objective function $f$, is defined as a summation of all the sample errors.
+  \item The objective function to minimize, is declared into the $\mathsf{Opti()}$ class, which involves all variables previously defined.
+  \item An Interior Point OPTimizer (IPOPT) is selected as a solver.
+  \item An initial guess is provided with the values proposed in Table \ref{tab:initial_guess}. If this line is not declared, a numerical zero would be assumed.
+  \item After setting up the problem, a solve method is called. 
+
+\end{enumerate}
 
 \begin{python}
 def minimize_function(Tz_a):
-    N = len(Tz_a)
-    delta_t = 3600  # s
-
-    data = read_csv("leuven_october2022_16-22.csv")
-
-    # Time dependent parameters
-    time = data['time'].tolist()
-    temp = data['temp'].tolist()  # deg C
-    for i in range(len(temp)):
-        temp[i] = temp[i] + 273.15  # deg K
-
-    Qg = np.zeros(len(time))
-    Qh = np.zeros(len(time))
-    for i in range(5):
-        Qg[0 + 24 * (i + 1):7 + 24 * (i + 1)] = 100  # W. Human heat 
-        Qg[18 + 24 * (i + 1):24 + 24 * (i + 1)] = 100 
-
-        Qh[0 + 24 * (i + 1):6 + 24 * (i + 1)] = 1000  # W. Heater
-        Qh[19 + 24 * (i + 1):24 + 24 * (i + 1)] = 1000
-
-    Qg[0:24] = 100
-    Qg[144:] = 100
-    Qh[0:24] = 1000
-    Qh[144:] = 1000
-
-    Qsun = data['solrad'].tolist()  # W/m2
-
-    # Initiating optimization variables
+   
+    # Initiating Optimization variables
     opti = Opti()
     R = opti.variable()
     C = opti.variable()
     gA = opti.variable()
-
     p = vertcat(R, C, gA)  # parameter vector
 
+	  # Definition of Objective function
     Tz = 293.15  # Initial temperature guess
-
-    f = 0   # Error function initial value
+    f = 0   # Objective function initial value
 
     for i in range(N):
         f = f + (Tz - Tz_a[i]) ** 2
@@ -97,15 +86,15 @@ def minimize_function(Tz_a):
         
     f = f + (Tz - Tz_a[N - 1]) ** 2
 
+	  # Objective function to minimize and Solver definition
     opti.minimize(f)
-
     opti.solver('ipopt')
 
-    # filling initial guess parameter vector
+    # Initial guess parameter vector
     p_hat = vertcat(R_guess, C_guess, gA_guess)
-
     opti.set_initial(p, p_hat)
 
+	  # Solve method
     sol = opti.solve()
 
     return sol.value(p)
