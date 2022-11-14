@@ -406,7 +406,7 @@ def mpc_lagrangian(T_start, plot=False):
         mu1[0 + 24 * (i + 1):7 + 24 * (i + 1)] = mu1_val
         mu2[0 + 24 * (i + 1):7 + 24 * (i + 1)] = mu2_val
         mu1[18 + 24 * (i + 1):24 + 24 * (i + 1)] = mu1_val
-        mu1[18 + 24 * (i + 1):24 + 24 * (i + 1)] = mu1_val
+        mu2[18 + 24 * (i + 1):24 + 24 * (i + 1)] = mu2_val
 
     temp_high = np.ones(N) * 298.15
     temp_low = np.ones(N) * 293.15
@@ -470,8 +470,6 @@ def mpc_lagrangian(T_start, plot=False):
 
         ax1.legend(loc='upper right')
         ax2.legend(loc='upper right')
-
-        ax1.set_title(r"MPC operation for one radiator. Minimize $\sum(\dot{Q}_{h} + \mu_i \cdot g_i (x))^2$")
 
         plt.show()
 
