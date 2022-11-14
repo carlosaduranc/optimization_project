@@ -101,7 +101,7 @@ Immediately, when comparing Figures \ref{fig:mpc_primal} and \ref{fig:onoff_radi
 While appreciating the benefits of the integrated MPC, the issue of robustness raises a large concern for the application of this system. This is due mainly to the strictness of the constraints for the zone temperature profile. By introducing the thermal comfort boundaries for the zone as a bounded constraint, we do not allow for considerations of exterior influences causing a drastic change in zone temperature and taking the zone outside of its comfort range (e.g. an open window, sudden rain, etc.). This effect is easily tested by varying the initial temperature for the zone since, at the first instance of the week, the thermal comfort constraint is valid. The following changes to the initial vector
 
 \begin{python}
-opti.set_value(x0, vertcat(253.15, temp[0], Qsun[0], Qg[0]))
+opti.set_value(x0, vertcat(283.15, temp[0], Qsun[0], Qg[0]))
 
 opti.solver('ipopt')
 sol = opti.solve()
@@ -134,7 +134,7 @@ Considering the robustness issues discussed in subsection \ref{subsec:primal_mpc
         mu1[0 + 24 * (i + 1):7 + 24 * (i + 1)] = mu1_val
         mu2[0 + 24 * (i + 1):7 + 24 * (i + 1)] = mu2_val
         mu1[18 + 24 * (i + 1):24 + 24 * (i + 1)] = mu1_val
-        mu1[18 + 24 * (i + 1):24 + 24 * (i + 1)] = mu1_val
+        mu2[18 + 24 * (i + 1):24 + 24 * (i + 1)] = mu2_val
 
     temp_high = np.ones(N) * 298.15
     temp_low = np.ones(N) * 293.15
