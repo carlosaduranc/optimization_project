@@ -406,7 +406,7 @@ def mpc_lagrangian(T_start, plot=False):
         mu1[0 + 24 * (i + 1):7 + 24 * (i + 1)] = mu1_val
         mu2[0 + 24 * (i + 1):7 + 24 * (i + 1)] = mu2_val
         mu1[18 + 24 * (i + 1):24 + 24 * (i + 1)] = mu1_val
-        mu1[18 + 24 * (i + 1):24 + 24 * (i + 1)] = mu1_val
+        mu2[18 + 24 * (i + 1):24 + 24 * (i + 1)] = mu2_val
 
     temp_high = np.ones(N) * 298.15
     temp_low = np.ones(N) * 293.15
@@ -471,8 +471,6 @@ def mpc_lagrangian(T_start, plot=False):
         ax1.legend(loc='upper right')
         ax2.legend(loc='upper right')
 
-        ax1.set_title(r"MPC operation for one radiator. Minimize $\sum(\dot{Q}_{h} + \mu_i \cdot g_i (x))^2$")
-
         plt.show()
 
     return sol.value(U), sol.value(X[0, :])
@@ -508,4 +506,4 @@ print('\nRMSE: ', 1 / len(error_opt) * np.sum(error_opt), '\n\n\n\n')
 [heat, temperature] = mpc_from_model(plot=False)
 
 # Minimizing energy consumption using lagrangian form
-[heat_lag, temperature_lag] = mpc_lagrangian(T_start=293.15, plot=True)
+[heat_lag, temperature_lag] = mpc_lagrangian(T_start=283.15, plot=True)

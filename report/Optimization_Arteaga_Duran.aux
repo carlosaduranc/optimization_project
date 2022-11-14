@@ -2,10 +2,13 @@
 \providecommand\hyper@newdestlabel[2]{}
 \providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
 \HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
 \global\let\oldnewlabel\newlabel
 \gdef\newlabel#1#2{\newlabelxx{#1}#2}
 \gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
 \AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
 \let\newlabel\oldnewlabel
 \fi}
 \fi}
@@ -54,8 +57,24 @@
 \newlabel{fig:Error Evolution}{{5}{8}{Error evolution $[K^2]$ in logarithmic scale throughout each iteration\relax }{figure.caption.9}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Model Predictive Control}{9}{section.3}\protected@file@percent }
 \newlabel{sec:mpc}{{3}{9}{Model Predictive Control}{section.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Conclusions}{10}{section.4}\protected@file@percent }
-\newlabel{sec:conclusions}{{4}{10}{Conclusions}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Primal MPC}{9}{subsection.3.1}\protected@file@percent }
+\newlabel{subsec:primal_mpc}{{3.1}{9}{Primal MPC}{subsection.3.1}{}}
+\newlabel{eq:mpc1}{{6}{11}{Primal MPC}{equation.3.6}{}}
+\newlabel{eq:mpc2}{{12}{11}{Primal MPC}{equation.3.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces MPC by means of a primal optimal problem for the zone heat deployment.\relax }}{11}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:mpc_primal}{{6}{11}{MPC by means of a primal optimal problem for the zone heat deployment.\relax }{figure.caption.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Lagrangian MPC}{13}{subsection.3.2}\protected@file@percent }
+\newlabel{subsec:lagrangian_mpc}{{3.2}{13}{Lagrangian MPC}{subsection.3.2}{}}
+\newlabel{eq:mpclag1}{{13}{14}{Lagrangian MPC}{equation.3.13}{}}
+\newlabel{eq:mpclag2}{{17}{14}{Lagrangian MPC}{equation.3.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces MPC by means of a lagrangian optimal problem for the zone heat deployment.\relax }}{14}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:mpc_lagrangian}{{7}{14}{MPC by means of a lagrangian optimal problem for the zone heat deployment.\relax }{figure.caption.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces MPC by means of a lagrangian optimal problem for the zone heat deployment with deviated initial zone temperature.\relax }}{15}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:mpc_lagrangian_Tstart}{{8}{15}{MPC by means of a lagrangian optimal problem for the zone heat deployment with deviated initial zone temperature.\relax }{figure.caption.12}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Conclusions}{16}{section.4}\protected@file@percent }
+\newlabel{sec:conclusions}{{4}{16}{Conclusions}{section.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Appendix A}{17}{appendix.A}\protected@file@percent }
+\newlabel{appendix}{{A}{17}{Appendix A}{appendix.A}{}}
 \gdef \LT@i {\LT@entry 
     {1}{113.32674pt}\LT@entry 
     {1}{38.51085pt}\LT@entry 
@@ -65,14 +84,6 @@
     {1}{38.90251pt}\LT@entry 
     {1}{35.89977pt}\LT@entry 
     {1}{43.14552pt}}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Appendix A}{11}{appendix.A}\protected@file@percent }
-\newlabel{appendix}{{A}{11}{Appendix A}{appendix.A}{}}
 \bibdata{references.bib}
-\bibcite{drgovna2020all}{1}
-\bibcite{nooa_2022}{2}
-\bibcite{kunstmann}{3}
-\bibcite{kelly2017introduction}{4}
-\bibcite{Andersson2018}{5}
 \bibstyle{unsrt}
-\@writefile{toc}{\contentsline {section}{References}{16}{dummy.1}\protected@file@percent }
-\gdef \@abspage@last{18}
+\gdef \@abspage@last{23}
