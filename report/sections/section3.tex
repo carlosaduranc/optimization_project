@@ -99,5 +99,23 @@ def minimize_function(Tz_a):
 
     return sol.value(p)
 \end{python}
-
-
+\newpage
+After executing the code, the solver 'ipopt' found the optimal values in 14 iterations, in which the decision variable $\mathbf{p}$ got the next values assigned: 
+\begin{align}
+    \mathbf{p} &= \begin{bmatrix}
+           \tilde{C}_z\\
+           \tilde{R}_w \\
+           \tilde{gA} 
+         \end{bmatrix} = \begin{bmatrix}
+           4999397.46\\
+           0.0100\\
+           0.9445 
+         \end{bmatrix} 
+  \end{align}
+This values are approximately the same as the values used to build the correct model stated in Table \ref{tab:constants}, so it can be concluded that the optimal values were found correctly. In addition, we inspect the evolution of the error in Figure \ref{fig:Error Evolution}. It can be observed that the error it is almost equal to 0, hence the minimization of the function was obtained. Due to the scaling factor of the graph, the reader can be confused believing that the $\mathsf{Error = 0}$ was obtained in iteration 7, but the actual value in that iteration is in the order of magnitude $10^3$, which is still far from zero. In contrast, the value in the last iteration is in the $10^{-3}$ order, therefore, it is considered as the minimum value of the optimization problem.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.75]{images/Error_evolution.png}
+\caption{Error evolution $[K^2]$ throughout each iteration}
+\label{fig:Error Evolution}
+\end{figure}

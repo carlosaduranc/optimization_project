@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.11.6)  13 NOV 2022 18:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.11.6)  14 NOV 2022 15:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1161,9 +1161,16 @@ File: lstlang1.sty 2020/03/24 1.8d listings language file
 )
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
 (Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 69.
-) [7] (sections/section4.tex) [8] (sections/section5.tex) [9]
-(sections/appendix.tex [10] [11] [12] [13]) [14]
-(Optimization_Arteaga_Duran.bbl) [15
+
+[7]
+<images/Error_evolution.png, id=208, 542.025pt x 289.08pt>
+File: images/Error_evolution.png Graphic file (type png)
+<use images/Error_evolution.png>
+Package pdftex.def Info: images/Error_evolution.png  used on input line 118.
+(pdftex.def)             Requested size: 406.51775pt x 216.80946pt.
+) [8 <./images/Error_evolution.png>] (sections/section4.tex) [9]
+(sections/section5.tex) [10] (sections/appendix.tex [11] [12] [13] [14])
+[15] (Optimization_Arteaga_Duran.bbl) [16
 
 ] (Optimization_Arteaga_Duran.aux)
 Package rerunfilecheck Info: File `Optimization_Arteaga_Duran.out' has not chan
@@ -1171,13 +1178,13 @@ ged.
 (rerunfilecheck)             Checksum: A7396EFCD047987A3033E4966148D6C8;1313.
  ) 
 Here is how much of TeX's memory you used:
- 30736 strings out of 475385
- 569941 string characters out of 2776907
- 1321254 words of memory out of 3000000
- 51471 multiletter control sequences out of 15000+600000
+ 30747 strings out of 475385
+ 570204 string characters out of 2776907
+ 1321335 words of memory out of 3000000
+ 51478 multiletter control sequences out of 15000+600000
  479737 words of font info for 65 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 96i,12n,99p,2265b,1690s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 96i,15n,99p,2265b,1690s stack positions out of 10000i,1000n,20000p,200000b,80000s
  <C:\Users\manue\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm
 1200.pk><C:/Users/manue/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
 ts/cm/cmbx12.pfb><C:/Users/manue/AppData/Local/Programs/MiKTeX/fonts/type1/publ
@@ -1197,9 +1204,9 @@ ts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/manue/AppData/Local/Programs/M
 iKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/manue/AppData/Local/Pr
 ograms/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/manue/AppData
 /Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on Optimization_Arteaga_Duran.pdf (17 pages, 17428111 bytes).
+Output written on Optimization_Arteaga_Duran.pdf (18 pages, 17446115 bytes).
 PDF statistics:
- 332 PDF objects out of 1000 (max. 8388607)
- 87 named destinations out of 1000 (max. 500000)
- 113 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 342 PDF objects out of 1000 (max. 8388607)
+ 90 named destinations out of 1000 (max. 500000)
+ 118 words of extra memory for PDF output out of 10000 (max. 10000000)
 
