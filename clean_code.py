@@ -240,6 +240,7 @@ a = np.array(np.array([[0, 5.58e6], [1, 5.55e6], [2, 5.45e6], [3, 5.09e6], [4, 7
 
 fig, ax1 = plt.subplots(1, 1, figsize=(7.5, 4))
 ax1.plot(a[:, 0], a[:, 1], label='Error')
+ax1.set_yscale('log')
 ax1.set_xlabel('Iteration')
 ax1.set_ylabel('Error [$K^2$]')
 ax1.grid()
