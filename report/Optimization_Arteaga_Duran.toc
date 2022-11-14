@@ -9,3 +9,4 @@
 \contentsline {subsection}{\numberline {3.2}Lagrangian MPC}{13}{subsection.3.2}%
 \contentsline {section}{\numberline {4}Conclusions}{16}{section.4}%
 \contentsline {section}{\numberline {A}Appendix A}{17}{appendix.A}%
+\contentsline {section}{References}{22}{dummy.1}%

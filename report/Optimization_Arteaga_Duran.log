@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.29)  14 NOV 2022 17:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.29)  14 NOV 2022 17:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1072,32 +1072,22 @@ Underfull \hbox (badness 10000) in paragraph at lines 3--4
 
  []
 
-<images/apartment.png, id=79, 4047.12pt x 2461.195pt>
+<images/apartment.png, id=84, 4047.12pt x 2461.195pt>
 File: images/apartment.png Graphic file (type png)
 <use images/apartment.png>
 Package pdftex.def Info: images/apartment.png  used on input line 13.
 (pdftex.def)             Requested size: 283.32735pt x 172.30125pt.
-
-LaTeX Warning: Citation `drgovna2020all' on page 1 undefined on input line 22.
-
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.23 
       [1 <./images/apartment.png>]
-<images/single_zone.png, id=88, 413.545pt x 327.2225pt>
+<images/single_zone.png, id=94, 413.545pt x 327.2225pt>
 File: images/single_zone.png Graphic file (type png)
 <use images/single_zone.png>
 Package pdftex.def Info: images/single_zone.png  used on input line 26.
 (pdftex.def)             Requested size: 206.77199pt x 163.61084pt.
-
-
-LaTeX Warning: Citation `nooa_2022' on page 2 undefined on input line 59.
-
-
-LaTeX Warning: Citation `kunstmann' on page 2 undefined on input line 59.
-
 
 Underfull \hbox (badness 10000) in paragraph at lines 59--60
 
@@ -1113,40 +1103,31 @@ Underfull \hbox (badness 10000) in paragraph at lines 79--80
 
  []
 
-<images/onoff_radiator.png, id=110, 478.4274pt x 448.7967pt>
+<images/onoff_radiator.png, id=119, 478.4274pt x 448.7967pt>
 File: images/onoff_radiator.png Graphic file (type png)
 <use images/onoff_radiator.png>
 Package pdftex.def Info: images/onoff_radiator.png  used on input line 85.
 (pdftex.def)             Requested size: 382.74243pt x 359.03784pt.
 ) [3] [4 <./images/onoff_radiator.png>] (./sections/section3.tex
-
-LaTeX Warning: Citation `kelly2017introduction' on page 5 undefined on input li
-ne 4.
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 13--15
 
  []
 
 [5]
-<images/error_actualvsmodel.png, id=141, 542.025pt x 361.35pt>
+<images/error_actualvsmodel.png, id=154, 542.025pt x 361.35pt>
 File: images/error_actualvsmodel.png Graphic file (type png)
 <use images/error_actualvsmodel.png>
 Package pdftex.def Info: images/error_actualvsmodel.png  used on input line 49.
 
 (pdftex.def)             Requested size: 406.51775pt x 271.01184pt.
-
-
-LaTeX Warning: Citation `Andersson2018' on page 6 undefined on input line 53.
-
-[6 <./images/error_actualvsmodel.png>]
+ [6 <./images/error_actualvsmodel.png>]
 (/usr/local/texlive/2021/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2020/03/24 1.8d listings language file
 )
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
 (Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 69.
  [7]
-<images/Error_evolution_log.png, id=205, 542.025pt x 289.08pt>
+<images/Error_evolution_log.png, id=220, 542.025pt x 289.08pt>
 File: images/Error_evolution_log.png Graphic file (type png)
 <use images/Error_evolution_log.png>
 Package pdftex.def Info: images/Error_evolution_log.png  used on input line 118
@@ -1168,7 +1149,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 39--40
  []
 
 [10]
-<images/mpc_primal.png, id=275, 469.0323pt x 441.5697pt>
+<images/mpc_primal.png, id=290, 469.0323pt x 441.5697pt>
 File: images/mpc_primal.png Graphic file (type png)
 <use images/mpc_primal.png>
 Package pdftex.def Info: images/mpc_primal.png  used on input line 94.
@@ -1189,7 +1170,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 150--151
  []
 
 [13]
-<images/mpc_lagrangian.png, id=335, 469.0323pt x 452.4102pt>
+<images/mpc_lagrangian.png, id=350, 469.0323pt x 452.4102pt>
 File: images/mpc_lagrangian.png Graphic file (type png)
 <use images/mpc_lagrangian.png>
 Package pdftex.def Info: images/mpc_lagrangian.png  used on input line 173.
@@ -1200,7 +1181,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 178--179
  []
 
 [14 <./images/mpc_lagrangian.png>]
-<images/mpc_lagrangian_Tstart.png, id=353, 475.5366pt x 448.074pt>
+<images/mpc_lagrangian_Tstart.png, id=368, 475.5366pt x 448.074pt>
 File: images/mpc_lagrangian_Tstart.png Graphic file (type png)
 <use images/mpc_lagrangian_Tstart.png>
 Package pdftex.def Info: images/mpc_lagrangian_Tstart.png  used on input line 1
@@ -1211,21 +1192,22 @@ Package pdftex.def Info: images/mpc_lagrangian_Tstart.png  used on input line 1
 Underfull \vbox (badness 10000) detected at line 25
  []
 
-[17] [18] [19] [20]) [21]
-No file Optimization_Arteaga_Duran.bbl.
+[17] [18] [19] [20]) [21] (./Optimization_Arteaga_Duran.bbl) [22
+
+]
 (./Optimization_Arteaga_Duran.aux)
 
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `Optimization_Arteaga_Duran.out' has not chan
 ged.
-(rerunfilecheck)             Checksum: 50C4B051C1031D6D267B3DA4EDE568F4;1463.
+(rerunfilecheck)             Checksum: AFB16E825D3EDA5E7F1A81C76B5D473A;1555.
  ) 
 Here is how much of TeX's memory you used:
- 29642 strings out of 478994
- 524147 string characters out of 5858184
- 1345166 words of memory out of 5000000
- 46376 multiletter control sequences out of 15000+600000
+ 29659 strings out of 478994
+ 524418 string characters out of 5858184
+ 1345306 words of memory out of 5000000
+ 46383 multiletter control sequences out of 15000+600000
  415749 words of font info for 70 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  107i,15n,105p,1108b,2084s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1249,10 +1231,10 @@ e/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive
 21/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/202
 1/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2021
 /texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on Optimization_Arteaga_Duran.pdf (23 pages, 17626127 bytes).
+Output written on Optimization_Arteaga_Duran.pdf (24 pages, 17631478 bytes).
 PDF statistics:
- 489 PDF objects out of 1000 (max. 8388607)
- 424 compressed objects within 5 object streams
- 183 named destinations out of 1000 (max. 500000)
- 141 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 510 PDF objects out of 1000 (max. 8388607)
+ 444 compressed objects within 5 object streams
+ 191 named destinations out of 1000 (max. 500000)
+ 149 words of extra memory for PDF output out of 10000 (max. 10000000)
 

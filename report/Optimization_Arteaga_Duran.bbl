@@ -1,0 +1,31 @@
+\begin{thebibliography}{1}
+
+\bibitem{drgovna2020all}
+J{\'a}n Drgo{\v{n}}a, Javier Arroyo, Iago~Cupeiro Figueroa, David Blum,
+  Krzysztof Arendt, Donghun Kim, Enric~Perarnau Oll{\'e}, Juraj Oravec, Michael
+  Wetter, Draguna~L Vrabie, et~al.
+\newblock All you need to know about model predictive control for buildings.
+\newblock {\em Annual Reviews in Control}, 50:190--232, 2020.
+
+\bibitem{nooa_2022}
+NOOA.
+\newblock Leuven, Oct 2022.
+
+\bibitem{kunstmann}
+Kunstmann.
+\newblock Weather.
+
+\bibitem{kelly2017introduction}
+Matthew Kelly.
+\newblock An introduction to trajectory optimization: How to do your own direct
+  collocation.
+\newblock {\em SIAM Review}, 59(4):849--904, 2017.
+
+\bibitem{Andersson2018}
+Joel A~E Andersson, Joris Gillis, Greg Horn, James~B Rawlings, and Moritz
+  Diehl.
+\newblock {CasADi} -- {A} software framework for nonlinear optimization and
+  optimal control.
+\newblock {\em Mathematical Programming Computation}, In Press, 2018.
+
+\end{thebibliography}
