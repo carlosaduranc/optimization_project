@@ -5,7 +5,7 @@
 \contentsline {subsection}{\numberline {2.1}Objective function}{5}{subsection.2.1}%
 \contentsline {section}{\numberline {3}Model Predictive Control}{8}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Primal MPC}{8}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Lagrangian MPC}{11}{subsection.3.2}%
-\contentsline {section}{\numberline {4}Conclusions}{12}{section.4}%
-\contentsline {section}{\numberline {A}Appendix A}{13}{appendix.A}%
-\contentsline {section}{References}{18}{dummy.1}%
+\contentsline {subsection}{\numberline {3.2}Lagrangian MPC}{12}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Conclusions}{13}{section.4}%
+\contentsline {section}{\numberline {A}Appendix A}{14}{appendix.A}%
+\contentsline {section}{References}{19}{dummy.1}%

@@ -52,9 +52,27 @@ for i in range(6):  # weekdays
 opti.subject_to(opti.bounded(0, U, 1000))
 \end{python}
 
+Next, initial conditions as well as the objective function were stated. Since the goal of the MPC is the reduction of energy consumption, the squared sum of the total heat deployed into the zone via the radiator $\sum \dot{Q}_{h}^2$ was declared as the cost function. The following snippet illustrates how both were introduced into CasADi.
+
+\begin{python}
+# setting initial conditions
+opti.subject_to(X[:, 0] == x0)
+
+# setting minimization equation
+opti.minimize(sumsqr(U))
+
+opti.set_value(x0, vertcat(293.15, temp[0], Qsun[0], Qg[0]))
+
+opti.solver('ipopt')
+sol = opti.solve()
+\end{python}
+
+The optimal control problem is then ready to be solved by means of the IPOPT solver. In order to provide more clarity, equations \ref{eq:mpc1} to \ref{eq:mpc2} summarize the above stated code in equation form.
+
 
 \begin{equation}
 {\text{minimize}} \hspace{1em} \sum_{i=1}^{N} \left(\dot{Q}_{h,i}\right)^2
+\label{eq:mpc1}
 \end{equation}
 \begin{equation}
 \text{subject to}  \hspace{1em} T_{z,i+1} - \Delta t \left( \frac{\dot{Q}_{h,i} + gA \cdot \dot{Q}_{sun, i} + \dot{Q}_{g,i}}{C_z} + \frac{T_{z,i}-T_{a,i}}{R_w \cdot C_z} \right) - T_{z,i} =0
@@ -66,7 +84,10 @@ T_{z,i} - 298.15 &\leq 0 \hspace{2em} \forall i \in \text{occupied}\\[0.5em]
 293.15 - T_{z,i} &\leq 0 \hspace{2em} \forall i \in \text{occupied}\\[0.5em]
 \dot{Q}_{h,i} - 1000 &\leq 0\\[0.5em]
 -\dot{Q}_{h,i} &\leq 0
+\label{eq:mpc2}
 \end{align}
+
+Lastly, the above stated MPC results in the temperature and heating deployment profiles seen in Figure \ref{fig:mpc_primal}.
 
 \begin{figure}[H]
 \centering
@@ -74,6 +95,21 @@ T_{z,i} - 298.15 &\leq 0 \hspace{2em} \forall i \in \text{occupied}\\[0.5em]
 \caption{MPC by means of a primal optimal problem for the zone heat deployment.}
 \label{fig:mpc_primal}
 \end{figure}
+
+Immediately, when comparing Figures \ref{fig:mpc_primal} and \ref{fig:onoff_radiator} a decrease in weekly cost of about 30\% can be seen. Additionally, this cost reduction comes with a more stable temperature profile for the zone, ensuring thermal comfort at all occupant times. It can also be noted that the heat deployment is maintained well below the maximum power output for most days, helping towards the reduction of energy use.\\
+
+While appreciating the benefits of the integrated MPC, the issue of robustness raises a large concern for the application of this system. This is due mainly to the strictness of the constraints for the zone temperature profile. By introducing the thermal comfort boundaries for the zone as a bounded constraint, we do not allow for considerations of exterior influences causing a drastic change in zone temperature and taking the zone outside of its comfort range (e.g. an open window, sudden rain, etc.). This effect is easily tested by varying the initial temperature for the zone since, at the first instance of the week, the thermal comfort constraint is valid. The following changes to the initial vector
+
+\begin{python}
+opti.set_value(x0, vertcat(253.15, temp[0], Qsun[0], Qg[0]))
+
+opti.solver('ipopt')
+sol = opti.solve()
+\end{python}
+
+quickly back the hypothesis since, by enforcing a temperature outside of the thermal comfort range, the solver is unable to return a solution and instead gives the error \texttt{return\_status is `Infeasible\_Problem\_Detected'}.\\
+
+For this reason, it was decided that these constraints should be relaxed in order to increase the robustness of the system. This is done by means of a lagrangian problem statement, which is developed in the following subsection.
 
 \subsection{Lagrangian MPC}
 \label{subsec:lagrangian_mpc}

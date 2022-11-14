@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.29)  11 NOV 2022 16:23
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.29)  14 NOV 2022 14:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1129,23 +1129,33 @@ Underfull \hbox (badness 10000) in paragraph at lines 39--40
 
  []
 
-<images/mpc_primal.png, id=245, 469.0323pt x 441.5697pt>
+[9]
+<images/mpc_primal.png, id=279, 469.0323pt x 441.5697pt>
 File: images/mpc_primal.png Graphic file (type png)
 <use images/mpc_primal.png>
-Package pdftex.def Info: images/mpc_primal.png  used on input line 73.
+Package pdftex.def Info: images/mpc_primal.png  used on input line 94.
 (pdftex.def)             Requested size: 375.22635pt x 353.25624pt.
-[9]
-<images/mpc_lagrangian.png, id=271, 480.5955pt x 450.9648pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 99--100
+
+ []
+
+[10 <./images/mpc_primal.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 110--111
+
+ []
+
+<images/mpc_lagrangian.png, id=293, 480.5955pt x 450.9648pt>
 File: images/mpc_lagrangian.png Graphic file (type png)
 <use images/mpc_lagrangian.png>
-Package pdftex.def Info: images/mpc_lagrangian.png  used on input line 84.
+Package pdftex.def Info: images/mpc_lagrangian.png  used on input line 120.
 (pdftex.def)             Requested size: 384.47693pt x 360.77231pt.
-) [10 <./images/mpc_primal.png>] [11 <./images/mpc_lagrangian.png>]
-(./sections/section5.tex) [12] (./sections/appendix.tex
+) [11] [12 <./images/mpc_lagrangian.png>] (./sections/section5.tex) [13]
+(./sections/appendix.tex
 Underfull \vbox (badness 10000) detected at line 25
  []
 
-[13] [14] [15] [16]) [17] (./Optimization_Arteaga_Duran.bbl) [18
+[14] [15] [16] [17]) [18] (./Optimization_Arteaga_Duran.bbl) [19
 
 ]
 (./Optimization_Arteaga_Duran.aux)
@@ -1157,10 +1167,10 @@ ged.
 (rerunfilecheck)             Checksum: B8A9F8E6F4EB4D4F2BF32FC890A2D47A;1341.
  ) 
 Here is how much of TeX's memory you used:
- 29555 strings out of 478994
- 522750 string characters out of 5858184
- 1474682 words of memory out of 5000000
- 46329 multiletter control sequences out of 15000+600000
+ 29583 strings out of 478994
+ 523096 string characters out of 5858184
+ 1474758 words of memory out of 5000000
+ 46340 multiletter control sequences out of 15000+600000
  413688 words of font info for 63 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  107i,12n,105p,1108b,2389s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1179,11 +1189,12 @@ texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/t
 exlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/tex
 live/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texl
 ive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texli
-ve/2021/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on Optimization_Arteaga_Duran.pdf (20 pages, 17462485 bytes).
+ve/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texliv
+e/2021/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
+Output written on Optimization_Arteaga_Duran.pdf (21 pages, 17473619 bytes).
 PDF statistics:
- 399 PDF objects out of 1000 (max. 8388607)
- 348 compressed objects within 4 object streams
- 149 named destinations out of 1000 (max. 500000)
+ 431 PDF objects out of 1000 (max. 8388607)
+ 378 compressed objects within 4 object streams
+ 166 named destinations out of 1000 (max. 500000)
  126 words of extra memory for PDF output out of 10000 (max. 10000000)
 
