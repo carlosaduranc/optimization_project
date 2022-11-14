@@ -3,9 +3,17 @@
 \contentsline {subsection}{\numberline {1.2}Zone Model}{2}{subsection.1.2}%
 \contentsline {section}{\numberline {2}Trajectory Optimization}{5}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Objective function}{5}{subsection.2.1}%
+<<<<<<< HEAD
 \contentsline {section}{\numberline {3}Model Predictive Control}{8}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Primal MPC}{8}{subsection.3.1}%
 \contentsline {subsection}{\numberline {3.2}Lagrangian MPC}{12}{subsection.3.2}%
 \contentsline {section}{\numberline {4}Conclusions}{15}{section.4}%
 \contentsline {section}{\numberline {A}Appendix A}{16}{appendix.A}%
 \contentsline {section}{References}{21}{dummy.1}%
+=======
+\contentsline {subsection}{\numberline {2.2}Trajectory optimization solver}{6}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Model Predictive Control}{9}{section.3}%
+\contentsline {section}{\numberline {4}Conclusions}{10}{section.4}%
+\contentsline {section}{\numberline {A}Appendix A}{11}{appendix.A}%
+\contentsline {section}{References}{16}{dummy.1}%
+>>>>>>> b203c445395a737a978ad8bda867b8297e740ddd

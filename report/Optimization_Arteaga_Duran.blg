@@ -1,46 +1,48 @@
-This is BibTeX, Version 0.99d (TeX Live 2021)
+This is BibTeX, Version 0.99d
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: Optimization_Arteaga_Duran.aux
+Reallocating 'name_of_file' (item size: 1) to 15 items.
+Reallocating 'name_of_file' (item size: 1) to 6 items.
 The style file: unsrt.bst
 Database file #1: references.bib
-You've used 3 entries,
+You've used 5 entries,
             1791 wiz_defined-function locations,
-            463 strings with 3975 characters,
-and the built_in function-call counts, 605 in all, are:
-= -- 39
-> -- 43
+            478 strings with 4365 characters,
+and the built_in function-call counts, 1013 in all, are:
+= -- 74
+> -- 64
 < -- 0
-+ -- 16
-- -- 13
-* -- 39
-:= -- 106
-add.period$ -- 7
-call.type$ -- 3
-change.case$ -- 3
++ -- 24
+- -- 19
+* -- 68
+:= -- 176
+add.period$ -- 13
+call.type$ -- 5
+change.case$ -- 5
 chr.to.int$ -- 0
-cite$ -- 3
-duplicate$ -- 19
-empty$ -- 60
-format.name$ -- 13
-if$ -- 125
+cite$ -- 5
+duplicate$ -- 36
+empty$ -- 98
+format.name$ -- 19
+if$ -- 211
 int.to.chr$ -- 0
-int.to.str$ -- 3
-missing$ -- 1
-newline$ -- 16
-num.names$ -- 3
-pop$ -- 13
+int.to.str$ -- 5
+missing$ -- 3
+newline$ -- 26
+num.names$ -- 5
+pop$ -- 17
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 14
+skip$ -- 20
 stack$ -- 0
-substring$ -- 25
-swap$ -- 3
+substring$ -- 50
+swap$ -- 5
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 5
-width$ -- 4
-write$ -- 28
+while$ -- 9
+width$ -- 6
+write$ -- 49
