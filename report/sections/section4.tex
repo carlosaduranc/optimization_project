@@ -111,8 +111,43 @@ quickly back the hypothesis since, by enforcing a temperature outside of the the
 
 For this reason, it was decided that these constraints should be relaxed in order to increase the robustness of the system. This is done by means of a lagrangian problem statement, which is developed in the following subsection.
 
+\newpage
 \subsection{Lagrangian MPC}
 \label{subsec:lagrangian_mpc}
+Considering the robustness issues discussed in subsection \ref{subsec:primal_mpc}, a lagrangian approach was taken. For this, the same initial steps were taken as before. The distinction between both approaches is seen during the constraints setting portion of the code. When taking a lagrangian problem statement, the relaxed constraints are moved into the cost function alongside a weight factor for each constraint. Nevertheless, since some hard constraints (the maximum heating output for the radiator) are still necessary to maintain the physical limits of the system, not all constraints were introduced into the cost function. 
+
+\begin{python}
+    # setting minimization equation in lagrangian form
+    mu1_val = 130
+    mu2_val = 150
+
+    # set the weights to a certain percentage for 'at work' hours
+    mu1 = np.ones(N) * mu1_val * 0.8
+    mu2 = np.ones(N) * mu2_val * 0.8
+
+    # values for 0.8mu whenever no one is home, mu_val whenever someone is
+    mu1[0:24] = mu1_val  # weekend
+    mu1[144:] = mu1_val
+    mu2[0:24] = mu2_val
+    mu2[144:] = mu2_val
+    for i in range(6):  # weekdays
+        mu1[0 + 24 * (i + 1):7 + 24 * (i + 1)] = mu1_val
+        mu2[0 + 24 * (i + 1):7 + 24 * (i + 1)] = mu2_val
+        mu1[18 + 24 * (i + 1):24 + 24 * (i + 1)] = mu1_val
+        mu1[18 + 24 * (i + 1):24 + 24 * (i + 1)] = mu1_val
+
+    temp_high = np.ones(N) * 298.15
+    temp_low = np.ones(N) * 293.15
+
+    opti.minimize(sumsqr(U + mu1*(Tz_var.T - temp_high) + mu2*(Tz_var.T - temp_low)))
+
+    opti.set_value(x0, vertcat(T_start, temp[0], Qsun[0], Qg[0]))
+
+    opti.solver('ipopt')
+    sol = opti.solve()
+\end{python}
+
+Here, the introduction of the lagrange multipliers $\mu_1$ and $\mu_2$ can be seen for the upper and lower thermal comfort boundaries, respectively. By varying these values, their weight (or importance) within the cost function varies, therefore these must be tuned depending on the preferences of the user. In the case lowering energy use is considered to be of highest importance, lower $\mu_i$ values would be used. On the other hand, if thermal comfort during occupancy times is the priority, higher $\mu_i$ values would be introduced. For the application shown here, a relative balance was attempted between both objectives: a maintenance of thermal comfort while taking into consideration energy use. 
 
 
 \begin{figure}[H]
@@ -120,4 +155,11 @@ For this reason, it was decided that these constraints should be relaxed in orde
 \includegraphics[scale=0.8]{images/mpc_lagrangian.png}
 \caption{MPC by means of a lagrangian optimal problem for the zone heat deployment.}
 \label{fig:mpc_lagrangian}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.8]{images/mpc_lagrangian_Tstart.png}
+\caption{MPC by means of a lagrangian optimal problem for the zone heat deployment.}
+\label{fig:mpc_lagrangian_Tstart}
 \end{figure}
