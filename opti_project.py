@@ -371,47 +371,43 @@ def mpc_lagrangian(T_start, plot=False):
     X = opti.variable(nx, N)  # states: Tz [K], Ta [K], Qsun [W/m2], Qg [W]. setup for multiple shooting
     Tz_var = X[0, :]
 
-    U = opti.variable(N, 1)  # control variable: Qh [W]
+    U = opti.variable(N, 2)  # control variable Qh [W] and slack variable S [-]
 
     x0 = opti.parameter(nx)  # initial state
 
     # Setting shooting constraints
     for i in range(N - 1):
-        opti.subject_to(X[0, i + 1] == delta_t * ((X[2, i] * gA + U[i] + X[3, i]) / C +
+        opti.subject_to(X[0, i + 1] == delta_t * ((X[2, i] * gA + U[i, 0] + X[3, i]) / C +
                                                   (X[1, i] - X[0, i]) / (R * C)) + X[0, i])
         opti.subject_to(X[1, i + 1] == temp[i + 1])
         opti.subject_to(X[2, i + 1] == Qsun[i + 1])
         opti.subject_to(X[3, i + 1] == Qg[i + 1])
 
     # bounded constraints for max and min power output for the radiator
-    opti.subject_to(opti.bounded(0, U, 1000))
+    opti.subject_to(opti.bounded(0, U[:, 0], 1000))
+    opti.subject_to(opti.bounded(0, U[:, 1], 1e5))
+
+    # setting bounded constraints (temp range for the zone whenever someone is home)
+    opti.subject_to(opti.bounded(293.15 - U[0:24, 1].T, X[0, 0:24], 298.15 + U[0:24, 1].T))  # weekend
+    opti.subject_to(opti.bounded(293.15 - U[144:, 1].T, X[0, 144:], 298.15 + U[144:, 1].T))  # weekend
+    for i in range(6):  # weekdays
+        opti.subject_to(opti.bounded(293.15 - U[0 + 24 * (i + 1):7 + 24 * (i + 1), 1].T,
+                                     X[0, 0 + 24 * (i + 1):7 + 24 * (i + 1)],
+                                     298.15 + U[0 + 24 * (i + 1):7 + 24 * (i + 1), 1].T))
+
+        opti.subject_to(opti.bounded(288.15 - U[7 + 24 * (i + 1):18 + 24 * (i + 1), 1].T,
+                                     X[0, 7 + 24 * (i + 1):18 + 24 * (i + 1)],
+                                     303.15 + U[7 + 24 * (i + 1):18 + 24 * (i + 1), 1].T))
+
+        opti.subject_to(opti.bounded(293.15 - U[18 + 24 * (i + 1):24 + 24 * (i + 1), 1].T,
+                                     X[0, 18 + 24 * (i + 1):24 + 24 * (i + 1)],
+                                     298.15 + U[18 + 24 * (i + 1):24 + 24 * (i + 1), 1].T))
 
     # setting initial conditions
     opti.subject_to(X[:, 0] == x0)
+    opti.subject_to(U[0, 1] == 1e5)
 
-    # setting minimization equation in lagrangian form
-    mu1_val = 130
-    mu2_val = 150
-
-    # set the weights to a certain percentage for 'at work' hours
-    mu1 = np.ones(N) * mu1_val * 0.8
-    mu2 = np.ones(N) * mu2_val * 0.8
-
-    # values for mu. 1 whenever no one is home, mu_val whenever someone is
-    mu1[0:24] = mu1_val  # weekend
-    mu1[144:] = mu1_val
-    mu2[0:24] = mu2_val
-    mu2[144:] = mu2_val
-    for i in range(6):  # weekdays
-        mu1[0 + 24 * (i + 1):7 + 24 * (i + 1)] = mu1_val
-        mu2[0 + 24 * (i + 1):7 + 24 * (i + 1)] = mu2_val
-        mu1[18 + 24 * (i + 1):24 + 24 * (i + 1)] = mu1_val
-        mu2[18 + 24 * (i + 1):24 + 24 * (i + 1)] = mu2_val
-
-    temp_high = np.ones(N) * 298.15
-    temp_low = np.ones(N) * 293.15
-
-    opti.minimize(sumsqr(U + mu1*(Tz_var.T - temp_high) + mu2*(Tz_var.T - temp_low)))
+    opti.minimize(sumsqr(U[:, 0] + 400*U[:, 1]))
 
     opti.set_value(x0, vertcat(T_start, temp[0], Qsun[0], Qg[0]))
 
@@ -419,7 +415,8 @@ def mpc_lagrangian(T_start, plot=False):
     sol = opti.solve()
 
     if plot:
-        Qh_mpc = sol.value(U)[0:168]
+        Qh_mpc = sol.value(U[:, 0])[0:168]
+        S = sol.value(U[:, 1])[0:168]
         Tz_mpc = sol.value(X[0, :])[0:168]
 
         # calculating the running cost for energy use
@@ -432,8 +429,27 @@ def mpc_lagrangian(T_start, plot=False):
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(7.5, 7.5), sharex=True)
         ax1.plot(time, temp, label=r'$T_{a}$')
         ax1.plot(time, Tz_mpc, label=r'$T_{z}$')
-        for i in [293.15, 298.15]:
-            ax1.hlines(i, xmin=time[0], xmax=time[-1], lw=0.7, ls='-', color='k', zorder=1)
+
+        boundaries_low = np.ones(168)
+        boundaries_high = np.ones(168)
+
+        boundaries_high[0:25] = 298.15
+        boundaries_high[143:] = 298.15
+        boundaries_low[0:25] = 293.15
+        boundaries_low[143:] = 293.15
+
+        for j in range(5):
+            boundaries_high[0 + 24 * (j + 1):7 + 24 * (j + 1)] = 298.15
+            boundaries_low[0 + 24 * (j + 1):7 + 24 * (j + 1)] = 293.15
+
+            boundaries_high[17 + 24 * (j + 1):24 + 24 * (j + 1)] = 298.15
+            boundaries_low[17 + 24 * (j + 1):24 + 24 * (j + 1)] = 293.15
+
+            boundaries_high[7 + 24 * (j + 1):18 + 24 * (j + 1)] = 303.15
+            boundaries_low[7 + 24 * (j + 1):18 + 24 * (j + 1)] = 288.15
+
+        ax1.plot(time, boundaries_high, lw=0.7, color='k', zorder=0)
+        ax1.plot(time, boundaries_low,  lw=0.7, color='k', zorder=0)
         ax2.plot(time, Qsun, label=r'$\dot{Q}_{sun} [W/m^2]$')
         ax2.plot(time, Qg, label=r'$\dot{Q}_{g} [W]$')
         ax2.plot(time, Qh_mpc, label=r'$\dot{Q}_{h} [W]$')
@@ -506,4 +522,4 @@ print('\nRMSE: ', 1 / len(error_opt) * np.sum(error_opt), '\n\n\n\n')
 [heat, temperature] = mpc_from_model(plot=False)
 
 # Minimizing energy consumption using lagrangian form
-[heat_lag, temperature_lag] = mpc_lagrangian(T_start=283.15, plot=True)
+[heat_lag, temperature_lag] = mpc_lagrangian(T_start=293.15, plot=True)

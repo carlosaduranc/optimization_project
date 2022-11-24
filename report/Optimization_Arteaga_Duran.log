@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.29)  14 NOV 2022 17:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.29)  23 NOV 2022 19:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1201,12 +1201,12 @@ LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `Optimization_Arteaga_Duran.out' has not chan
 ged.
-(rerunfilecheck)             Checksum: AFB16E825D3EDA5E7F1A81C76B5D473A;1555.
+(rerunfilecheck)             Checksum: 994E511DFFE56EF157CC2F7288755891;1540.
  ) 
 Here is how much of TeX's memory you used:
  29659 strings out of 478994
- 524418 string characters out of 5858184
- 1345306 words of memory out of 5000000
+ 524415 string characters out of 5858184
+ 1344297 words of memory out of 5000000
  46383 multiletter control sequences out of 15000+600000
  415749 words of font info for 70 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1231,7 +1231,7 @@ e/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive
 21/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/202
 1/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2021
 /texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on Optimization_Arteaga_Duran.pdf (24 pages, 17631478 bytes).
+Output written on Optimization_Arteaga_Duran.pdf (24 pages, 17631102 bytes).
 PDF statistics:
  510 PDF objects out of 1000 (max. 8388607)
  444 compressed objects within 5 object streams

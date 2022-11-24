@@ -109,12 +109,12 @@ sol = opti.solve()
 
 quickly back the hypothesis since, by enforcing a temperature outside of the thermal comfort range, the solver is unable to return a solution and instead gives the error \texttt{return\_status is `Infeasible\_Problem\_Detected'}.\\
 
-For this reason, it was decided that these constraints should be relaxed in order to increase the robustness of the system. This is done by means of a lagrangian problem statement, which is developed in the following subsection.
+For this reason, it was decided that these constraints should be relaxed in order to increase the robustness of the system. This is done by introducing a penalty variable into the cost function, which is developed in the following subsection.
 
 \newpage
-\subsection{Lagrangian MPC}
-\label{subsec:lagrangian_mpc}
-Considering the robustness issues discussed in subsection \ref{subsec:primal_mpc}, a lagrangian approach was taken. For this, the same initial steps were taken as before. The distinction between both approaches is seen during the constraints setting portion of the code. When taking a lagrangian problem statement, the relaxed constraints are moved into the cost function alongside a weight factor for each constraint. Nevertheless, since some hard constraints (the maximum heating output for the radiator) are still necessary to maintain the physical limits of the system, not all constraints were introduced into the cost function. 
+\subsection{Relaxed MPC}
+\label{subsec:relaxed_mpc}
+Considering the robustness issues discussed in subsection \ref{subsec:primal_mpc}, a relaxed approach was taken. For this, the same initial steps were taken as before. The distinction between both approaches is seen during the constraints setting portion of the code. When taking a relaxed approach, the constraints to be relaxed are moved into the cost function alongside a penalty variable. Since some hard constraints (the maximum heating output for the radiator) are still necessary to maintain the physical limits of the system, not all constraints were introduced into the cost function. 
 
 \begin{python}
     # setting minimization equation in lagrangian form
