@@ -336,7 +336,7 @@ def mpc_from_model(plot=False):
     return sol.value(U), sol.value(X[0, :])
 
 
-def mpc_lagrangian(T_start, plot=False):
+def mpc_relaxed(T_start, s0, plot=False):
     # taking the optimal parameters calculated in previous step
     R = R_opt
     C = C_opt
@@ -385,7 +385,7 @@ def mpc_lagrangian(T_start, plot=False):
 
     # bounded constraints for max and min power output for the radiator
     opti.subject_to(opti.bounded(0, U[:, 0], 1000))
-    opti.subject_to(opti.bounded(0, U[:, 1], 1e5))
+    opti.subject_to(opti.bounded(0, U[:, 1], s0))
 
     # setting bounded constraints (temp range for the zone whenever someone is home)
     opti.subject_to(opti.bounded(293.15 - U[0:24, 1].T, X[0, 0:24], 298.15 + U[0:24, 1].T))  # weekend
@@ -405,7 +405,7 @@ def mpc_lagrangian(T_start, plot=False):
 
     # setting initial conditions
     opti.subject_to(X[:, 0] == x0)
-    opti.subject_to(U[0, 1] == 1e5)
+    opti.subject_to(U[0, 1] == s0)
 
     opti.minimize(sumsqr(U[:, 0] + 400*U[:, 1]))
 
@@ -522,4 +522,4 @@ print('\nRMSE: ', 1 / len(error_opt) * np.sum(error_opt), '\n\n\n\n')
 [heat, temperature] = mpc_from_model(plot=False)
 
 # Minimizing energy consumption using lagrangian form
-[heat_lag, temperature_lag] = mpc_lagrangian(T_start=293.15, plot=True)
+[heat_lag, temperature_lag] = mpc_relaxed(T_start=293.15, s0=1e5, plot=True)
