@@ -368,8 +368,7 @@ def mpc_relaxed(T_start, s0, plot=False):
     # Initializing optimization problem
     opti = Opti()
 
-    X = opti.variable(nx, N)  # states: Tz [K], Ta [K], Qsun [W/m2], Qg [W]. setup for multiple shooting
-    Tz_var = X[0, :]
+    X = opti.variable(nx, N)  # states: Tz [K], Ta [K], Qsun [W/m2], Qg [W].
 
     U = opti.variable(N, 2)  # control variable Qh [W] and slack variable S [-]
 
@@ -518,7 +517,7 @@ R_guess = 1  # K/W
 
 print('\nRMSE: ', 1 / len(error_opt) * np.sum(error_opt), '\n\n\n\n')
 
-# Minimizing energy consumption (TRIVIAL)
+# Minimizing energy consumption
 [heat, temperature] = mpc_from_model(plot=False)
 
 # Minimizing energy consumption using lagrangian form

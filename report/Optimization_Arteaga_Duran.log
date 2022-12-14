@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.29)  24 NOV 2022 18:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021) (preloaded format=pdflatex 2021.4.29)  14 DEC 2022 18:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1139,17 +1139,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 27--28
 
  []
 
-
-LaTeX Warning: Reference `eq:finite_difference' on page 9 undefined on input li
-ne 29.
-
 [9]
 Underfull \hbox (badness 10000) in paragraph at lines 39--40
 
  []
 
 [10]
-<images/mpc_primal.png, id=290, 469.0323pt x 441.5697pt>
+<images/mpc_primal.png, id=291, 469.0323pt x 441.5697pt>
 File: images/mpc_primal.png Graphic file (type png)
 <use images/mpc_primal.png>
 Package pdftex.def Info: images/mpc_primal.png  used on input line 94.
@@ -1165,55 +1161,78 @@ Underfull \hbox (badness 10000) in paragraph at lines 110--111
  []
 
 [12]
-Underfull \hbox (badness 10000) in paragraph at lines 150--151
+<images/relaxed_mpc_st.png, id=318, 804.00375pt x 605.26125pt>
+File: images/relaxed_mpc_st.png Graphic file (type png)
+<use images/relaxed_mpc_st.png>
+Package pdftex.def Info: images/relaxed_mpc_st.png  used on input line 132.
+(pdftex.def)             Requested size: 469.75502pt x 353.62846pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 137--138
 
  []
 
-[13]
-<images/mpc_lagrangian.png, id=350, 474.8139pt x 445.1832pt>
+[13 <./images/relaxed_mpc_st.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 139--140
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 144--145
+
+ []
+
+<images/mpc_lagrangian.png, id=334, 474.8139pt x 445.1832pt>
 File: images/mpc_lagrangian.png Graphic file (type png)
 <use images/mpc_lagrangian.png>
-Package pdftex.def Info: images/mpc_lagrangian.png  used on input line 173.
+Package pdftex.def Info: images/mpc_lagrangian.png  used on input line 172.
 (pdftex.def)             Requested size: 379.85164pt x 356.14705pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 178--179
+[14]
+Underfull \hbox (badness 10000) in paragraph at lines 177--178
 
  []
 
-[14 <./images/mpc_lagrangian.png>]
-<images/mpc_lagrangian_Tstart.png, id=368, 474.8139pt x 446.6286pt>
+<images/mpc_lagrangian_Tstart.png, id=354, 474.8139pt x 446.6286pt>
 File: images/mpc_lagrangian_Tstart.png Graphic file (type png)
 <use images/mpc_lagrangian_Tstart.png>
 Package pdftex.def Info: images/mpc_lagrangian_Tstart.png  used on input line 1
-84.
+83.
 (pdftex.def)             Requested size: 379.85164pt x 357.30336pt.
-) [15 <./images/mpc_lagrangian_Tstart.png>]
-(./sections/section5.tex) [16] (./sections/appendix.tex
+) [15 <./images/mpc_lagrangian.png>] [16 <./images/mpc_lagrangian_Tstart.png>]
+(./sections/section5.tex
+Underfull \hbox (badness 10000) in paragraph at lines 4--5
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 6--7
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 8--9
+
+ []
+
+) [17] (./sections/appendix.tex
 Underfull \vbox (badness 10000) detected at line 25
  []
 
-[17] [18] [19] [20]) [21] (./Optimization_Arteaga_Duran.bbl) [22
+[18] [19] [20] [21]) [22] (./Optimization_Arteaga_Duran.bbl) [23
 
 ]
 (./Optimization_Arteaga_Duran.aux)
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
 Package rerunfilecheck Info: File `Optimization_Arteaga_Duran.out' has not chan
 ged.
 (rerunfilecheck)             Checksum: 994E511DFFE56EF157CC2F7288755891;1540.
  ) 
 Here is how much of TeX's memory you used:
- 29659 strings out of 478994
- 524415 string characters out of 5858184
- 1344297 words of memory out of 5000000
- 46383 multiletter control sequences out of 15000+600000
+ 29623 strings out of 478994
+ 524078 string characters out of 5858184
+ 1324415 words of memory out of 5000000
+ 46361 multiletter control sequences out of 15000+600000
  415749 words of font info for 70 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 107i,15n,105p,1108b,2084s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 107i,15n,105p,1085b,2084s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2021/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 }</usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></
@@ -1234,10 +1253,10 @@ e/2021/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive
 21/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/202
 1/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2021
 /texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on Optimization_Arteaga_Duran.pdf (24 pages, 17645087 bytes).
+Output written on Optimization_Arteaga_Duran.pdf (25 pages, 17782597 bytes).
 PDF statistics:
- 510 PDF objects out of 1000 (max. 8388607)
- 444 compressed objects within 5 object streams
- 191 named destinations out of 1000 (max. 500000)
- 149 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 500 PDF objects out of 1000 (max. 8388607)
+ 431 compressed objects within 5 object streams
+ 176 named destinations out of 1000 (max. 500000)
+ 154 words of extra memory for PDF output out of 10000 (max. 10000000)
 

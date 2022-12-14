@@ -26,7 +26,7 @@ As a first step, the calculated constants from section \ref{sec:trajectory_optim
 
 Here, it can be seen that the state variable vector is initialized as a 4 by N+1 vector. This is since the transcription method used during this optimization is multiple shooting, which requires an additional state instance when compared to the control vector.\\
 
-Moreover, the state vector was filled by means of a for-loop, following equation \ref{eq:finite_difference} and populating the rest of the states from the data collected in appendix \ref{appendix}.
+Moreover, the state vector was filled by means of a for-loop, following equation \ref{eq:finite_difference_model} and populating the rest of the states from the data collected in appendix \ref{appendix}.
 \begin{python}
 # Setting shooting constraints
 for i in range(N - 1):
@@ -114,45 +114,39 @@ For this reason, it was decided that these constraints should be relaxed in orde
 \newpage
 \subsection{Relaxed MPC}
 \label{subsec:relaxed_mpc}
-Considering the robustness issues discussed in subsection \ref{subsec:primal_mpc}, a relaxed approach was taken. For this, the same initial steps were taken as before. The distinction between both approaches is seen during the constraints setting portion of the code. When taking a relaxed approach, the constraints to be relaxed are moved into the cost function alongside a penalty variable. Since some hard constraints (the maximum heating output for the radiator) are still necessary to maintain the physical limits of the system, not all constraints were introduced into the cost function. 
+Considering the robustness issues discussed in subsection \ref{subsec:primal_mpc}, a relaxed approach was taken. For this, the same initial steps were taken as before. The distinction between both approaches is seen during the constraints setting portion of the code. When taking a relaxed approach, an additional slack variable is introduced into the control vector. 
 
 \begin{python}
-    # setting minimization equation in lagrangian form
-    mu1_val = 130
-    mu2_val = 150
+# Initializing optimization problem
+opti = Opti()
 
-    # set the weights to a certain percentage for 'at work' hours
-    mu1 = np.ones(N) * mu1_val * 0.8
-    mu2 = np.ones(N) * mu2_val * 0.8
+X = opti.variable(4, N)  # states: Tz [K], Ta [K], Qsun [W/m2], Qg [W].
 
-    # values for 0.8mu whenever no one is home, mu_val whenever someone is
-    mu1[0:24] = mu1_val  # weekend
-    mu1[144:] = mu1_val
-    mu2[0:24] = mu2_val
-    mu2[144:] = mu2_val
-    for i in range(6):  # weekdays
-        mu1[0 + 24 * (i + 1):7 + 24 * (i + 1)] = mu1_val
-        mu2[0 + 24 * (i + 1):7 + 24 * (i + 1)] = mu2_val
-        mu1[18 + 24 * (i + 1):24 + 24 * (i + 1)] = mu1_val
-        mu2[18 + 24 * (i + 1):24 + 24 * (i + 1)] = mu2_val
-
-    temp_high = np.ones(N) * 298.15
-    temp_low = np.ones(N) * 293.15
-
-    opti.minimize(sumsqr(U + mu1*(Tz_var.T - temp_high) + mu2*(Tz_var.T - temp_low)))
-
-    opti.set_value(x0, vertcat(T_start, temp[0], Qsun[0], Qg[0]))
-
-    opti.solver('ipopt')
-    sol = opti.solve()
+U = opti.variable(N, 2)  # Qh [W] and slack variable S [-]
 \end{python}
 
-Here, the introduction of the lagrange multipliers $\boldsymbol{\mu}_1$ and $\boldsymbol{\mu}_2$ can be seen for the upper and lower thermal comfort boundaries, respectively. By varying these values, their weight (or importance) within the cost function varies, therefore these must be tuned depending on the preferences of the user. In the case lowering energy use is considered to be of highest importance, lower $\boldsymbol{\mu}_i$ values would be used. On the other hand, if thermal comfort during occupancy times is the priority, higher $\boldsymbol{\mu}_i$ values would be introduced. For the application shown here, a relative balance was attempted between both objectives: a maintenance of thermal comfort while taking into consideration energy use. Moreover, in order to account for `at work' hours, the lagrangian multiplier values were decreased by 20\% during those instances in order to reduce energy use while still allowing for the zone to pre-heat itself whenever someone is expected to come home.\\
+This slack variable $S$ is then introduced into the cost function alongside a penalty factor as well as into the inequality constraints in order to allow for a larger flexibility for the system. Figure \ref{fig:relaxed_mpc_st} shows this integration of the slack variable in the form of a control variable.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/relaxed_mpc_st.png}
+\caption{Integration of slack variable $S$ (here \texttt{U[:, 1]}) into thermal comfort limits.}
+\label{fig:relaxed_mpc_st}
+\end{figure}
+
+A few things can be mentioned here. First, the constraints for the zone heating $Q_h$ (here \texttt{U[:, 0]}) remain the same as the previous primal case. This is because the heater limits must be set as hard constraints since it is unphysical for the equipment to go beyond its maximum heating output. Moreover, it can be seen that limits are set for the slack variable. In particular, they are set to be between 0 and an initial value $s_0$ which is usually in the order of $10^5$. It is common practice to set this initial value to be very large in order to allow enough flexibility for the system to adjust itself in the initial instance. It can be seen that this value decreases rapidly as the OCP attempts to reach the set temperature ranges. \\
+
+Next, the thermal comfort ranges are set. For this, the slack variable is introduced such that instead of the inequality constraints are set to be $\leq 0$, they are set to be $\leq S$. This allows for the system to not become unfeasible in the case where the comfort limits are breached. Additionally, instead of removing the constraints whenever someone is not home, the thermal comfort range is widened (seen in Figure \ref{fig:relaxed_mpc_st} in the second command within the \texttt{for} loop) from [293.15, 298.15] to [288.15, 303.15]. This allows for a reduction in heat consumption while not allowing for the zone temperature to drop too much and hinder the comfort for the following occupancy period.\\
+
+
+%Here, the introduction of the lagrange multipliers $\boldsymbol{\mu}_1$ and $\boldsymbol{\mu}_2$ can be seen for the upper and lower thermal comfort boundaries, respectively. By varying these values, their weight (or importance) within the cost function varies, therefore these must be tuned depending on the preferences of the user. In the case lowering energy use is considered to be of highest importance, lower $\boldsymbol{\mu}_i$ values would be used. On the other hand, if thermal comfort during occupancy times is the priority, higher $\boldsymbol{\mu}_i$ values would be introduced. For the application shown here, a relative balance was attempted between both objectives: a maintenance of thermal comfort while taking into consideration energy use. Moreover, in order to account for `at work' hours, the lagrangian multiplier values were decreased by 20\% during those instances in order to reduce energy use while still allowing for the zone to pre-heat itself whenever someone is expected to come home.\\
+
+Finally, the cost function is declared as before with the addition of the slack variable multiplied by a penalty factor (here = 400). This factor must be tuned according to the preferences of the user. A larger factor gives a larger penalty to the zone crossing the thermal comfort limits, resulting in a more constant zone temperature at the cost of higher energy consumption. The opposite case is true for smaller penalty factors. This value was achieved by tuning to an appropriate balance between both, although, as mentioned, this balance is user-dependent.\\
 
 The resulting optimal control problem can be stated mathematically as the following:
 
 \begin{equation}
-{\text{minimize}} \hspace{1em} \sum_{i=1}^{N} \left(\dot{Q}_{h,i} + \mu_{1,i}\left(T_{z,i} - 298.15\right) + \mu_{2,i}\left(293.15 - T_{z,i}\right)\right)^2
+{\text{minimize}} \hspace{1em} \sum_{i=1}^{N} \left(\dot{Q}_{h,i} + 400\cdot S_i\right)^2
 \label{eq:mpclag1}
 \end{equation}
 \begin{equation}
@@ -161,6 +155,11 @@ The resulting optimal control problem can be stated mathematically as the follow
 \vspace{-0.5em}
 \begin{align}
 \left[T_{z,0}, T_{a,0}, \dot{Q}_{sun,0}, \dot{Q}_{g,0}\right]^{\top}  - \boldsymbol{X}_0 &=  0 \\[0.5em]
+S_0 &= 10^5 \\[0.5em]
+T_{z,i} - 298.15 &\leq S_i \hspace{2em} \forall i \in \text{occupied}\\[0.5em]
+293.15 - T_{z,i} &\leq S_i \hspace{2em} \forall i \in \text{occupied}\\[0.5em]
+T_{z,i} - 303.15 &\leq S_i \hspace{2em} \forall i \notin \text{occupied}\\[0.5em]
+288.15 - T_{z,i} &\leq S_i \hspace{2em} \forall i \notin \text{occupied}\\[0.5em]
 \dot{Q}_{h,i} - 1000 &\leq 0\\[0.5em]
 -\dot{Q}_{h,i} &\leq 0
 \label{eq:mpclag2}
@@ -171,13 +170,13 @@ Finally, the results for this optimal control problem can be seen in Figure \ref
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.8]{images/mpc_lagrangian.png}
-\caption{MPC by means of a lagrangian optimal problem for the zone heat deployment.}
+\caption{MPC by means of a relaxed optimal control problem for the zone heat deployment.}
 \label{fig:mpc_lagrangian}
 \end{figure}
 
-Similar to Figure \ref{fig:mpc_primal}, Figure \ref{fig:mpc_lagrangian} shows a decrease in energy costs when compared to Figure \ref{fig:onoff_radiator}. Nevertheless, this is only represented by a 30\% decrease instead of the 42\% from before. This is due to the relaxation of the thermal boundary constraints and the weight balance applied in equation \ref{eq:mpclag1}. This cost reduction could be set to match, or even surpass the 42\% from the primal MPC but it would come at the cost of thermal comfort for the zone occupants. For this reason, this extra cost is tolerated to ensure thermal comfort.\\
+Comparing these results to Figure \ref{fig:onoff_radiator}, Figure \ref{fig:mpc_lagrangian} shows a further decrease in energy costs when compared to Figure \ref{fig:mpc_primal}. Here, a 49\% cost reduction can be observed when compared to the baseline case. These savings surpass the already high savings seen in the primal MPC application (42\%) while having a much more robust behavior.\\
 
-More significantly, this MPC application follows reality more accurately than the one developed using a primal problem statement. By not forcing the zone temperature to be within the comfort boundaries at all moments, the system becomes robust towards outliers and sudden changes caused by third parties without crashing. Figure \ref{fig:mpc_lagrangian_Tstart} shows the results for the same experiment done in subsection \ref{subsec:primal_mpc}. Here, the robustness of the lagrangian problem statement becomes evident since, by relaxing the variables, the system allows for outliers without crashing while still penalizing them and quickly recovering.
+More significantly, this MPC application follows reality more accurately than the one developed using a primal problem statement. By not forcing the zone temperature to be within the comfort boundaries at all moments, the system becomes robust towards outliers and sudden changes caused by third parties without crashing. Figure \ref{fig:mpc_lagrangian_Tstart} shows the results for the same experiment done in subsection \ref{subsec:primal_mpc} starting from 283.15 K. Here, the robustness of the relaxed problem statement becomes evident since, by removing the hard constraints, the system allows for outliers without crashing while still penalizing them and quickly recovering.
 
 \begin{figure}[H]
 \centering
