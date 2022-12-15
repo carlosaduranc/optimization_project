@@ -7,18 +7,18 @@ Following the identification of the model done in section \ref{sec:trajectory_op
 As a first step, the calculated constants from section \ref{sec:trajectory_optimization} were used to develop the model. In order to ensure a proper MPC development, model state and control variables were determined. For this, the zone temperature $T_z$, ambient temperature $T_a$, solar radiation $\dot{Q}_{sun}$ and the heat input due to occupancy $\dot{Q}_g$ were taken as the system states $\boldsymbol{X}$. Since the goal of the MPC is the optimal deployment of the zone heating $\dot{Q}_{h}$, it was taken as the control variable $U$. The following code shows how these were expressed.
 
 \begin{python}
-    # constants
-    N = len(time)  # number of samples
-    delta_t = 3600  # s in 1 hour
+    # Constants
+    N = len(time)  # Number of samples
+    delta_t = 3600  # [s] in 1 hour
+    nx = 4  # Number of states for system
+    
+    # Taking the optimal parameters calculated
     R = R_opt
     C = C_opt
     gA = gA_opt
 
-    nx = 4  # number of states for system
-
     # Initializing optimization problem
     opti = Opti()
-
     X = opti.variable(nx, N + 1)  # states: Tz [K], Ta [K], Qsun [W/m2], Qg [W]. Multiple shooting
 
     U = opti.variable(N, 1)  # control variable: Qh [W]
@@ -41,24 +41,24 @@ Here, the first state is fully determined as a function of the control values, a
 Next, the matter of constraints is considered. For this, first the physical limits for the radiator are stated by setting the control variables to be within 0 and 1000 W (its maximal heating output). Furthermore, the thermal comfort limits were placed for the zone temperature for instances on which someone is occupying the zone. This allows for the reduction of heating output during non-occupation times, leading to lower electrical costs. For this, a typical occupational time range was used on which there is one person inside the zone during the entire weekend and the zone is not occupied in the weekdays from 07:00 to 18:00.
 
 \begin{python}
-# setting bounded constraints (temp range for the zone whenever someone is home)
-opti.subject_to(opti.bounded(293.15, X[0, 0:24], 298.15))  # weekend
-opti.subject_to(opti.bounded(293.15, X[0, 144:], 298.15))  # weekend
-for i in range(6):  # weekdays
+# Setting bounded constraints (temp range for the zone whenever someone is home)
+opti.subject_to(opti.bounded(293.15, X[0, 0:24], 298.15))  # Weekend
+opti.subject_to(opti.bounded(293.15, X[0, 144:], 298.15))  # Weekend
+for i in range(6):  # Weekdays
    opti.subject_to(opti.bounded(293.15, X[0,0+24*(i+1):7+24*(i+1)], 298.15))
    opti.subject_to(opti.bounded(293.15, X[0,18+24*(i+1):24+24*(i+1)], 298.15))
 
-# bounded constraints for max and min power output for the radiator
+# Bounded constraints for max and min power output for the radiator
 opti.subject_to(opti.bounded(0, U, 1000))
 \end{python}
 
 Next, initial conditions as well as the objective function were stated. Since the goal of the MPC is the reduction of energy consumption, the squared sum of the total heat deployed into the zone via the radiator $\sum \dot{Q}_{h}^2$ was declared as the cost function. The following snippet illustrates how both were introduced into CasADi.
 
 \begin{python}
-# setting initial conditions
+# Setting initial conditions
 opti.subject_to(X[:, 0] == x0)
 
-# setting minimization equation
+# Setting minimization equation
 opti.minimize(sumsqr(U))
 
 opti.set_value(x0, vertcat(293.15, temp[0], Qsun[0], Qg[0]))
@@ -98,16 +98,7 @@ Lastly, the above stated MPC results in the temperature and heating deployment p
 
 Immediately, when comparing Figures \ref{fig:mpc_primal} and \ref{fig:onoff_radiator} a decrease in weekly cost of about 42\% can be seen. Additionally, this cost reduction comes with a more stable temperature profile for the zone, ensuring thermal comfort at all occupant times. It can also be noted that the heat deployment is maintained well below the maximum power output for most days, helping towards the reduction of energy use and the extension of the lifespan of the radiator.\\
 
-While appreciating the benefits of the integrated MPC, the issue of robustness raises a large concern for the application of this system. This is due mainly to the strictness of the constraints for the zone temperature profile. By introducing the thermal comfort boundaries for the zone as a bounded constraint, we do not allow for considerations of exterior influences causing a drastic change in zone temperature and taking the zone outside of its comfort range (e.g. an open window, sudden rain, etc.). This effect is easily tested by varying the initial temperature for the zone since, at the first instance of the week, the thermal comfort constraint is valid. The following changes to the initial vector
-
-\begin{python}
-opti.set_value(x0, vertcat(283.15, temp[0], Qsun[0], Qg[0]))
-
-opti.solver('ipopt')
-sol = opti.solve()
-\end{python}
-
-quickly back the hypothesis since, by enforcing a temperature outside of the thermal comfort range, the solver is unable to return a solution and instead gives the error \texttt{return\_status is `Infeasible\_Problem\_Detected'}.\\
+While appreciating the benefits of the integrated MPC, the issue of robustness raises a large concern for the application of this system. This is due mainly to the strictness of the constraints for the zone temperature profile. By introducing the thermal comfort boundaries for the zone as a bounded constraint, we do not allow for considerations of exterior influences causing a drastic change in zone temperature and taking the zone outside of its comfort range (e.g. an open window, sudden rain, etc.). This effect is easily tested by varying the initial temperature from 293.15 $\mathsf{K}$ to 283.15 $\mathsf{K}$ for the zone since, at the first instance of the week, the thermal comfort constraint is valid. This change on the initial vector, quickly backs the hypothesis since, by enforcing a temperature outside of the thermal comfort range, the solver is unable to return a solution and instead gives the error \texttt{return\_status is `Infeasible\_Problem\_Detected'}.\\
 
 For this reason, it was decided that these constraints should be relaxed in order to increase the robustness of the system. This is done by introducing a penalty variable into the cost function, which is developed in the following subsection.
 
@@ -120,7 +111,7 @@ Considering the robustness issues discussed in subsection \ref{subsec:primal_mpc
 # Initializing optimization problem
 opti = Opti()
 
-X = opti.variable(4, N)  # states: Tz [K], Ta [K], Qsun [W/m2], Qg [W].
+X = opti.variable(4, N)  # States: Tz [K], Ta [K], Qsun [W/m2], Qg [W].
 
 U = opti.variable(N, 2)  # Qh [W] and slack variable S [-]
 \end{python}
@@ -129,7 +120,7 @@ This slack variable $S$ is then introduced into the cost function alongside a pe
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/relaxed_mpc_st.png}
+\includegraphics[width=\textwidth]{images/relaxed_mpc_st2.png}
 \caption{Integration of slack variable $S$ (here \texttt{U[:, 1]}) into thermal comfort limits.}
 \label{fig:relaxed_mpc_st}
 \end{figure}

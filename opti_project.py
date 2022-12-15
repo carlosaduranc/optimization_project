@@ -2,20 +2,32 @@ from matplotlib import pyplot as plt
 from pandas import *
 from casadi import *
 
+################################################################
+## Model identification and heating strategy optimization
+## for a small, single zone RC-lumped model
 
-# Model identification and heating strategy optimization for a small, single zone RC-lumped model
-# The room in question is a single room with a single window facing south (maximum sun exposure throughout the day)
-# The room is equipped with a single radiator with a max power output of 1kW which can be controlled with a valve
+## The room in question is a single room with a single window
+## facing south (maximum sun exposure throughout the day)
 
+## The room is equipped with a single radiator with a max power
+## output of 1kW which can be controlled with a valve
+################################################################
 
 def create_model_onoff(gA, C, R, plot=False):
+    ################################################
+    ## Description of the function: Plot the thermal
+    ## zone behavior with an on/off method, it will
+    ## work as a baseline to compare the performance
+    ## of the optimized models
+    ################################################
+
     data = read_csv("leuven_october2022_16-22.csv")
 
     # Time dependent parameters
     time = data['time'].tolist()
-    temp = data['temp'].tolist()  # deg C
+    temp = data['temp'].tolist()  # Temperature [°C]
     for i in range(len(temp)):
-        temp[i] = temp[i] + 273.15  # deg K
+        temp[i] = temp[i] + 273.15  # Temperature [K]
 
     Qg = np.zeros(len(time))
     Qh = np.zeros(len(time))
@@ -34,18 +46,16 @@ def create_model_onoff(gA, C, R, plot=False):
     Qsun = data['solrad'].tolist()  # W/m2
 
     Tz = np.zeros(len(time))
-    Tz[0] = 293.15  # initial zone temp
+    Tz[0] = 293.15  # Initial zone temperature
+    delta_t = 3600  # [s]
 
-    delta_t = 3600  # s
-
-    # calculating the temperature
+    # Calculating the temperature
     for i in range(len(Tz) - 1):
         Tz[i + 1] = delta_t * ((Qsun[i] * gA + Qh[i] + Qg[i]) / C + (temp[i] - Tz[i]) / (R * C)) + Tz[i]
 
-    # calculating the running cost for energy use
+    # Calculating the running cost for energy use
     cost = np.zeros(len(time))
-    rate = 0.410  # euro/kWh in Belgium
-
+    rate = 0.410  # EUR/kWh in Belgium
     for i in range(len(time) - 1):
         cost[i + 1] = cost[i] + rate * Qh[i] * 0.001
 
@@ -98,12 +108,17 @@ def create_model_onoff(gA, C, R, plot=False):
 
 
 def compare_models(Tz_a, Tz_b, time, plot=False):
-    # calculating l-2 norm for each
+    ###############################################
+    ## Description of the function: Create graphs to
+    ## compare and inspect different models.
+    ###############################################
+
+    # Calculating l-2 norm for each
     e = np.zeros(len(Tz_a))
     for i in range(len(Tz_a)):
         e[i] = 1 / 2 * (Tz_a[i] - Tz_b[i]) ** 2
 
-    # calculating RMSE
+    # Calculating RMSE
     rmse = 1 / len(e) * sum(e)
 
     if plot:
@@ -144,25 +159,29 @@ def compare_models(Tz_a, Tz_b, time, plot=False):
 
 
 def minimize_function(Tz_a):
+    ###############################################
+    ## FUNCTION: TRAJECTORY OPTIMIZATION
+    ## Consult section 2 for further explanation
+    ###############################################
+
     opti = Opti()
-    N = len(Tz_a)
-
-    delta_t = 3600  # s
-
     data = read_csv("leuven_october2022_16-22.csv")
+
+    # Constants
+    N = len(Tz_a)
+    delta_t = 3600  # [s]
 
     # Time dependent parameters
     time = data['time'].tolist()
-    temp = data['temp'].tolist()  # deg C
+    temp = data['temp'].tolist()  # Temperature [°C]
     for i in range(len(temp)):
-        temp[i] = temp[i] + 273.15  # deg K
+        temp[i] = temp[i] + 273.15  # Temperature [K]
 
     Qg = np.zeros(len(time))
     Qh = np.zeros(len(time))
     for i in range(5):
         Qg[0 + 24 * (i + 1):7 + 24 * (i + 1)] = 100  # W. Human heat output
         Qg[18 + 24 * (i + 1):24 + 24 * (i + 1)] = 100  # W. For one person
-
         Qh[0 + 24 * (i + 1):6 + 24 * (i + 1)] = 1000  # W. Heater
         Qh[19 + 24 * (i + 1):24 + 24 * (i + 1)] = 1000  # W. Max power on/off strategy
 
@@ -178,52 +197,53 @@ def minimize_function(Tz_a):
     C = opti.variable()
     gA = opti.variable()
 
-    #  parameter vector
+    #  Parameter vector
     p = vertcat(R, C, gA)
 
-    # Initial temperature guess
+    # Initial Temperature guess
     Tz = 293.15
 
-    # Error function: initial value
+    # Error function: Initial value
     f = 0
 
     for i in range(N):
         f = f + (Tz - Tz_a[i]) ** 2
-
         Tz_next = delta_t * ((Qsun[i] * gA + Qh[i] + Qg[i]) / C + (temp[i] - Tz) / (R * C)) + Tz
         Tz = Tz_next
 
     f = f + (Tz - Tz_a[N - 1]) ** 2
 
     opti.minimize(f)
-
     opti.solver('ipopt')
 
-    # filling initial guess parameter vector
+    # Filling initial guess parameter vector
     p_hat = vertcat(R_guess, C_guess, gA_guess)
 
     opti.set_initial(p, p_hat)
-
     sol = opti.solve()
-
     return sol.value(p)
 
 
 def mpc_from_model(plot=False):
-    # taking the optimal parameters calculated in previous step
+    ###############################################
+    ## FUNCTION: MODEL PREDICTIVE CONTROL
+    ## Consult section 3.1 for further explanation
+    ###############################################
+
+    # Taking the optimal parameters calculated in previous step
     R = R_opt
     C = C_opt
     gA = gA_opt
 
-    # gathering data
+    # Gathering data
     data = read_csv("leuven_october2022_16-22.csv")
 
     # Time dependent parameters
     Qsun = data['solrad'].tolist()  # W/m2
     time = data['time'].tolist()
-    temp = data['temp'].tolist()  # deg C
+    temp = data['temp'].tolist()  # Temperature [°C]
     for i in range(len(temp)):
-        temp[i] = temp[i] + 273.15  # deg K
+        temp[i] = temp[i] + 273.15  # Temperature [K]
 
     Qg = np.zeros(len(time))
     for i in range(5):
@@ -232,19 +252,16 @@ def mpc_from_model(plot=False):
     Qg[0:24] = 100
     Qg[144:] = 100
 
-    # constants
-    N = len(time)  # number of samples
-    delta_t = 3600  # s in 1 hour
+    # Constants
+    N = len(time)  # Number of samples
+    delta_t = 3600  # [s]
 
-    nx = 4  # number of states for system
+    nx = 4  # Number of states for system
 
     # Initializing optimization problem
     opti = Opti()
-
     X = opti.variable(nx, N + 1)  # states: Tz [K], Ta [K], Qsun [W/m2], Qg [W]. setup for multiple shooting
-
     U = opti.variable(N, 1)  # control variable: Qh [W]
-
     x0 = opti.parameter(nx)  # initial state
 
     # Setting shooting constraints
@@ -255,23 +272,26 @@ def mpc_from_model(plot=False):
         opti.subject_to(X[2, i + 1] == Qsun[i + 1])
         opti.subject_to(X[3, i + 1] == Qg[i + 1])
 
-    # setting bounded constraints (temp range for the zone whenever someone is home)
-    opti.subject_to(opti.bounded(293.15, X[0, 0:24], 298.15))  # weekend
-    opti.subject_to(opti.bounded(293.15, X[0, 144:], 298.15))  # weekend
-    for i in range(6):  # weekdays
+    # Setting bounded constraints (temp range for the zone whenever someone is home)
+    opti.subject_to(opti.bounded(293.15, X[0, 0:24], 298.15))  # Weekend
+    opti.subject_to(opti.bounded(293.15, X[0, 144:], 298.15))  # Weekend
+
+    for i in range(6):  # Weekdays
         opti.subject_to(opti.bounded(293.15, X[0, 0 + 24 * (i + 1):7 + 24 * (i + 1)], 298.15))
         opti.subject_to(opti.bounded(293.15, X[0, 18 + 24 * (i + 1):24 + 24 * (i + 1)], 298.15))
 
-    # bounded constraints for max and min power output for the radiator
+    # Bounded constraints for max and min power output for the radiator
     opti.subject_to(opti.bounded(0, U, 1000))
 
-    # setting initial conditions
+    # Setting initial conditions
     opti.subject_to(X[:, 0] == x0)
 
-    # setting minimization equation
+    # Setting minimization equation
     opti.minimize(sumsqr(U))
 
     opti.set_value(x0, vertcat(293.15, temp[0], Qsun[0], Qg[0]))
+    # Uncomment the next line to proof infeasible problem
+    # opti.set_value(x0, vertcat(283.15, temp[0], Qsun[0], Qg[0]))
 
     opti.solver('ipopt')
     sol = opti.solve()
@@ -280,9 +300,9 @@ def mpc_from_model(plot=False):
         Qh_mpc = sol.value(U)[0:168]
         Tz_mpc = sol.value(X[0, :])[0:168]
 
-        # calculating the running cost for energy use
+        # Calculating the running cost for energy use
         cost = np.zeros(len(time))
-        rate = 0.410  # euro/kWh in Belgium
+        rate = 0.410  # EUR/kWh in Belgium
 
         for i in range(len(time) - 1):
             cost[i + 1] = cost[i] + rate * Qh_mpc[i] * 0.001
@@ -337,20 +357,25 @@ def mpc_from_model(plot=False):
 
 
 def mpc_relaxed(T_start, s0, plot=False):
-    # taking the optimal parameters calculated in previous step
+    ###############################################
+    ## FUNCTION: RELAXED MODEL PREDICTIVE CONTROL
+    ## Consult section 3.2 for further explanation
+    ###############################################
+
+    # Taking the optimal parameters calculated in previous step
     R = R_opt
     C = C_opt
     gA = gA_opt
 
-    # gathering data
+    # Gathering data
     data = read_csv("leuven_october2022_16-22.csv")
 
     # Time dependent parameters
     Qsun = data['solrad'].tolist()  # W/m2
     time = data['time'].tolist()
-    temp = data['temp'].tolist()  # deg C
+    temp = data['temp'].tolist()  # # Temperature [°C]
     for i in range(len(temp)):
-        temp[i] = temp[i] + 273.15  # deg K
+        temp[i] = temp[i] + 273.15  # # Temperature [K]
 
     Qg = np.zeros(len(time))
     for i in range(5):
@@ -359,20 +384,16 @@ def mpc_relaxed(T_start, s0, plot=False):
     Qg[0:24] = 100
     Qg[144:] = 100
 
-    # constants
-    N = len(time)  # number of samples
-    delta_t = 3600  # s in 1 hour
-
-    nx = 4  # number of states for system
+    # Constants
+    N = len(time)  # Number of samples
+    delta_t = 3600  # [s] in 1 hour
+    nx = 4  # Number of states for system
 
     # Initializing optimization problem
     opti = Opti()
-
-    X = opti.variable(nx, N)  # states: Tz [K], Ta [K], Qsun [W/m2], Qg [W].
-
-    U = opti.variable(N, 2)  # control variable Qh [W] and slack variable S [-]
-
-    x0 = opti.parameter(nx)  # initial state
+    X = opti.variable(nx, N)  # States: Tz [K], Ta [K], Qsun [W/m2], Qg [W].
+    U = opti.variable(N, 2)  # Control variable Qh [W] and slack variable S [-]
+    x0 = opti.parameter(nx)  # Initial state
 
     # Setting shooting constraints
     for i in range(N - 1):
@@ -382,14 +403,15 @@ def mpc_relaxed(T_start, s0, plot=False):
         opti.subject_to(X[2, i + 1] == Qsun[i + 1])
         opti.subject_to(X[3, i + 1] == Qg[i + 1])
 
-    # bounded constraints for max and min power output for the radiator
+    # Bounded constraints for MAX and MIN power output for the radiator
     opti.subject_to(opti.bounded(0, U[:, 0], 1000))
     opti.subject_to(opti.bounded(0, U[:, 1], s0))
 
-    # setting bounded constraints (temp range for the zone whenever someone is home)
-    opti.subject_to(opti.bounded(293.15 - U[0:24, 1].T, X[0, 0:24], 298.15 + U[0:24, 1].T))  # weekend
-    opti.subject_to(opti.bounded(293.15 - U[144:, 1].T, X[0, 144:], 298.15 + U[144:, 1].T))  # weekend
-    for i in range(6):  # weekdays
+    # Setting bounded constraints (temp range for the zone whenever someone is home)
+    opti.subject_to(opti.bounded(293.15 - U[0:24, 1].T, X[0, 0:24], 298.15 + U[0:24, 1].T))  # Weekend
+    opti.subject_to(opti.bounded(293.15 - U[144:, 1].T, X[0, 144:], 298.15 + U[144:, 1].T))  # Weekend
+
+    for i in range(6):  # Weekdays
         opti.subject_to(opti.bounded(293.15 - U[0 + 24 * (i + 1):7 + 24 * (i + 1), 1].T,
                                      X[0, 0 + 24 * (i + 1):7 + 24 * (i + 1)],
                                      298.15 + U[0 + 24 * (i + 1):7 + 24 * (i + 1), 1].T))
@@ -402,14 +424,13 @@ def mpc_relaxed(T_start, s0, plot=False):
                                      X[0, 18 + 24 * (i + 1):24 + 24 * (i + 1)],
                                      298.15 + U[18 + 24 * (i + 1):24 + 24 * (i + 1), 1].T))
 
-    # setting initial conditions
+    # Setting initial conditions
     opti.subject_to(X[:, 0] == x0)
     opti.subject_to(U[0, 1] == s0)
 
     opti.minimize(sumsqr(U[:, 0] + 400*U[:, 1]))
 
     opti.set_value(x0, vertcat(T_start, temp[0], Qsun[0], Qg[0]))
-
     opti.solver('ipopt')
     sol = opti.solve()
 
@@ -418,9 +439,9 @@ def mpc_relaxed(T_start, s0, plot=False):
         S = sol.value(U[:, 1])[0:168]
         Tz_mpc = sol.value(X[0, :])[0:168]
 
-        # calculating the running cost for energy use
+        # Calculating the running cost for energy use
         cost = np.zeros(len(time))
-        rate = 0.410  # euro/kWh in Belgium
+        rate = 0.410  # EUR/kWh in Belgium
 
         for i in range(len(time) - 1):
             cost[i + 1] = cost[i] + rate * Qh_mpc[i] * 0.001
@@ -487,12 +508,11 @@ def mpc_relaxed(T_start, s0, plot=False):
         ax2.legend(loc='upper right')
 
         plt.show()
-
     return sol.value(U), sol.value(X[0, :])
 
 
 # Assume correct values
-gA_true = 0.45 * 2.10  # glazing factor * window area. m2
+gA_true = 0.45 * 2.10  # Glazing factor * Window area. m2
 C_true = 5000000  # J/K
 R_true = 0.01  # K/W
 
@@ -514,7 +534,6 @@ R_guess = 1  # K/W
 # Loading model with calculated variables and comparing to true model
 [Tz_opt, time_opt] = create_model_onoff(gA=gA_opt, C=C_opt, R=R_opt, plot=False)
 [error_opt, time_error_opt] = compare_models(Tz_a=Tz_true, Tz_b=Tz_opt, time=time_true, plot=False)
-
 print('\nRMSE: ', 1 / len(error_opt) * np.sum(error_opt), '\n\n\n\n')
 
 # Minimizing energy consumption
