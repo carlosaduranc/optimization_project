@@ -2,6 +2,7 @@ from matplotlib import pyplot as plt
 from pandas import *
 from casadi import *
 
+
 ################################################################
 ## Model identification and heating strategy optimization
 ## for a small, single zone RC-lumped model
@@ -11,6 +12,8 @@ from casadi import *
 
 ## The room is equipped with a single radiator with a max power
 ## output of 1kW which can be controlled with a valve
+##
+## For visualization of any step, change plot from False to True
 ################################################################
 
 def create_model_onoff(gA, C, R, plot=False):
@@ -70,7 +73,7 @@ def create_model_onoff(gA, C, R, plot=False):
         ax2.plot(time, Qh, label=r'$\dot{Q}_{h} [W]$')
         ax3.plot(time, cost)
         ax3.hlines(cost[-1], xmin=time[0], xmax=time[-1], lw=0.7, ls='--', color='b', zorder=1)
-        ax3.text(x=time[1], y=cost[-1]+1.02, s=str(round(cost[-1], 2)) + '€')
+        ax3.text(x=time[1], y=cost[-1] + 1.02, s=str(round(cost[-1], 2)) + '€')
 
         for i in range(6):
             ax1.vlines(time[24 * (i + 1)], ymin=-100, ymax=1000, lw=0.7, ls='--', color='k', zorder=1)
@@ -128,7 +131,7 @@ def compare_models(Tz_a, Tz_b, time, plot=False):
         ax1.plot(time, Tz_b, label='Model')
         ax2.plot(time, e, label='Error')
         ax2.hlines(rmse, xmin=time[0], xmax=time[-1], lw=1, ls='-', color='k', zorder=1, label='RMSE')
-        ax2.text(x=time[1], y=rmse*1.01, s='RMSE: ' + str(format(rmse, '.2E')) + r'$K^2$')
+        ax2.text(x=time[1], y=rmse * 1.01, s='RMSE: ' + str(format(rmse, '.2E')) + r'$K^2$')
 
         for i in range(6):
             ax1.vlines(time[24 * (i + 1)], ymin=-100, ymax=1000, lw=0.7, ls='--', color='k', zorder=1)
@@ -139,8 +142,8 @@ def compare_models(Tz_a, Tz_b, time, plot=False):
         ax1.set_xlim([time[0], time[-1]])
         ax2.set_xlim([time[0], time[-1]])
 
-        ax1.set_ylim([285, max(Tz_b)*1.01])
-        ax2.set_ylim([0, max(e)*1.01])
+        ax1.set_ylim([285, max(Tz_b) * 1.01])
+        ax2.set_ylim([0, max(e) * 1.01])
 
         ax1.set_ylabel('Temperature [K]')
         ax2.set_ylabel('Error [$K^2$]')
@@ -428,7 +431,7 @@ def mpc_relaxed(T_start, s0, plot=False):
     opti.subject_to(X[:, 0] == x0)
     opti.subject_to(U[0, 1] == s0)
 
-    opti.minimize(sumsqr(U[:, 0] + 400*U[:, 1]))
+    opti.minimize(sumsqr(U[:, 0] + 400 * U[:, 1]))
 
     opti.set_value(x0, vertcat(T_start, temp[0], Qsun[0], Qg[0]))
     opti.solver('ipopt')
@@ -469,7 +472,7 @@ def mpc_relaxed(T_start, s0, plot=False):
             boundaries_low[7 + 24 * (j + 1):18 + 24 * (j + 1)] = 288.15
 
         ax1.plot(time, boundaries_high, lw=0.7, color='k', zorder=0)
-        ax1.plot(time, boundaries_low,  lw=0.7, color='k', zorder=0)
+        ax1.plot(time, boundaries_low, lw=0.7, color='k', zorder=0)
         ax2.plot(time, Qsun, label=r'$\dot{Q}_{sun} [W/m^2]$')
         ax2.plot(time, Qg, label=r'$\dot{Q}_{g} [W]$')
         ax2.plot(time, Qh_mpc, label=r'$\dot{Q}_{h} [W]$')
@@ -511,33 +514,34 @@ def mpc_relaxed(T_start, s0, plot=False):
     return sol.value(U), sol.value(X[0, :])
 
 
-# Assume correct values
-gA_true = 0.45 * 2.10  # Glazing factor * Window area. m2
-C_true = 5000000  # J/K
-R_true = 0.01  # K/W
+if __name__ == "__main__":
+    # Assume correct values
+    gA_true = 0.45 * 2.10  # Glazing factor * Window area. m2
+    C_true = 5000000  # J/K
+    R_true = 0.01  # K/W
 
-# Guesses for the parameters
-gA_guess = 0.1 * 1  # m2
-C_guess = 1000000  # J/K
-R_guess = 1  # K/W
+    # Guesses for the parameters
+    gA_guess = 0.1 * 1  # m2
+    C_guess = 1000000  # J/K
+    R_guess = 1  # K/W
 
-# Loading true zone temperature and model zone temperature
-[Tz_true, time_true] = create_model_onoff(gA=gA_true, C=C_true, R=R_true, plot=False)
-[Tz_guess, time_guess] = create_model_onoff(gA=gA_guess, C=C_guess, R=R_guess, plot=False)
+    # Loading true zone temperature and model zone temperature
+    [Tz_true, time_true] = create_model_onoff(gA=gA_true, C=C_true, R=R_true, plot=False)
+    [Tz_guess, time_guess] = create_model_onoff(gA=gA_guess, C=C_guess, R=R_guess, plot=False)
 
-# Comparing models. Extracting error function to be minimized
-[error, time_error] = compare_models(Tz_a=Tz_true, Tz_b=Tz_guess, time=time_true, plot=False)
+    # Comparing models. Extracting error function to be minimized
+    [error, time_error] = compare_models(Tz_a=Tz_true, Tz_b=Tz_guess, time=time_true, plot=False)
 
-# Minimizing error function. Output optimal parameters
-[R_opt, C_opt, gA_opt] = minimize_function(Tz_a=Tz_true)
+    # Minimizing error function. Output optimal parameters
+    [R_opt, C_opt, gA_opt] = minimize_function(Tz_a=Tz_true)
 
-# Loading model with calculated variables and comparing to true model
-[Tz_opt, time_opt] = create_model_onoff(gA=gA_opt, C=C_opt, R=R_opt, plot=False)
-[error_opt, time_error_opt] = compare_models(Tz_a=Tz_true, Tz_b=Tz_opt, time=time_true, plot=False)
-print('\nRMSE: ', 1 / len(error_opt) * np.sum(error_opt), '\n\n\n\n')
+    # Loading model with calculated variables and comparing to true model
+    [Tz_opt, time_opt] = create_model_onoff(gA=gA_opt, C=C_opt, R=R_opt, plot=False)
+    [error_opt, time_error_opt] = compare_models(Tz_a=Tz_true, Tz_b=Tz_opt, time=time_true, plot=False)
+    print('\nRMSE: ', 1 / len(error_opt) * np.sum(error_opt), '\n\n\n\n')
 
-# Minimizing energy consumption
-[heat, temperature] = mpc_from_model(plot=False)
+    # Minimizing energy consumption
+    [heat, temperature] = mpc_from_model(plot=False)
 
-# Minimizing energy consumption using lagrangian form
-[heat_lag, temperature_lag] = mpc_relaxed(T_start=293.15, s0=1e5, plot=True)
+    # Minimizing energy consumption using lagrangian form
+    [heat_lag, temperature_lag] = mpc_relaxed(T_start=293.15, s0=1e5, plot=True)
