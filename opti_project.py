@@ -104,6 +104,7 @@ def create_model_onoff(gA, C, R, plot=False):
 
         ax1.legend(loc='upper right')
         ax2.legend(loc='upper right')
+        fig.suptitle('Thermal zone model ON/OFF', fontsize=16)
 
         plt.show()
 
@@ -352,7 +353,7 @@ def mpc_from_model(plot=False):
         ax1.legend(loc='upper right')
         ax2.legend(loc='upper right')
 
-        ax1.set_title("MPC operation for one radiator. Minimize sumsqr(Qh)")
+        fig.suptitle("MPC operation for one radiator. Minimize sumsqr(Qh)", fontsize=16)
 
         plt.show()
 
@@ -509,6 +510,7 @@ def mpc_relaxed(T_start, s0, plot=False):
 
         ax1.legend(loc='upper right')
         ax2.legend(loc='upper right')
+        fig.suptitle('Model Predictive Control with Relaxed Constraints', fontsize=16)
 
         plt.show()
     return sol.value(U), sol.value(X[0, :])
@@ -526,7 +528,7 @@ if __name__ == "__main__":
     R_guess = 1  # K/W
 
     # Loading true zone temperature and model zone temperature
-    [Tz_true, time_true] = create_model_onoff(gA=gA_true, C=C_true, R=R_true, plot=False)
+    [Tz_true, time_true] = create_model_onoff(gA=gA_true, C=C_true, R=R_true, plot=True)
     [Tz_guess, time_guess] = create_model_onoff(gA=gA_guess, C=C_guess, R=R_guess, plot=False)
 
     # Comparing models. Extracting error function to be minimized
@@ -541,7 +543,7 @@ if __name__ == "__main__":
     print('\nRMSE: ', 1 / len(error_opt) * np.sum(error_opt), '\n\n\n\n')
 
     # Minimizing energy consumption
-    [heat, temperature] = mpc_from_model(plot=False)
+    [heat, temperature] = mpc_from_model(plot=True)
 
     # Minimizing energy consumption using lagrangian form
     [heat_lag, temperature_lag] = mpc_relaxed(T_start=293.15, s0=1e5, plot=True)

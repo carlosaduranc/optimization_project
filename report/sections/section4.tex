@@ -27,11 +27,10 @@ As a first step, the calculated constants from section \ref{sec:trajectory_optim
 Here, it can be seen that the state variable vector is initialized as a 4 by N+1 vector. This is since the transcription method used during this optimization is multiple shooting, which requires an additional state instance when compared to the control vector.\\
 
 Moreover, the state vector was filled by means of a for-loop, following equation \ref{eq:finite_difference_model} and populating the rest of the states from the data collected in appendix \ref{appendix}.
-\begin{python}
+\begin{python}[basicstyle=\small]
 # Setting shooting constraints
 for i in range(N - 1):
-    opti.subject_to(X[0, i+1] == delta_t * ((X[2,i] * gA + U[i] + X[3,i])/C + (X[1,i] - X[0,i])/(R*C)) + 
-    										 				X[0,i])
+   opti.subject_to(X[0,i+1] == delta_t * ((X[2,i] * gA + U[i] + X[3,i])/C + (X[1,i]-X[0,i])/(R*C)) + X[0,i])
 \end{python}    
 \begin{python}
     opti.subject_to(X[1, i + 1] == temp[i + 1])
@@ -101,7 +100,7 @@ Lastly, the above stated MPC results in the temperature and heating deployment p
 
 Immediately, when comparing Figures \ref{fig:mpc_primal} and \ref{fig:onoff_radiator} a decrease in weekly cost of about 42\% can be seen. Additionally, this cost reduction comes with a more stable temperature profile for the zone, ensuring thermal comfort at all occupant times. It can also be noted that the heat deployment is maintained well below the maximum power output for most days, helping towards the reduction of energy use and the extension of the lifespan of the radiator.\\
 
-While appreciating the benefits of the integrated MPC, the issue of robustness raises a large concern for the application of this system. This is due mainly to the strictness of the constraints for the zone temperature profile. By introducing the thermal comfort boundaries for the zone as a bounded constraint, we do not allow for considerations of exterior influences causing a drastic change in zone temperature and taking the zone outside of its comfort range (e.g. an open window, sudden rain, etc.). This effect is easily tested by varying the initial temperature from 293.15 $\mathsf{K}$ to 283.15 $\mathsf{K}$ for the zone since, at the first instance of the week, the thermal comfort constraint is valid. This change on the initial vector, quickly backs the hypothesis since, by enforcing a temperature outside of the thermal comfort range, the solver is unable to return a solution and instead gives the error \texttt{return\_status is `Infeasible\_Problem\_Detected'}.\\
+While appreciating the benefits of the integrated MPC, the issue of robustness raises a large concern for the application of this system. This is due mainly to the strictness of the constraints for the zone temperature profile. By introducing the thermal comfort boundaries for the zone as a bounded constraint, we do not allow for considerations of exterior influences causing a drastic change in zone temperature and taking the zone outside of its comfort range (e.g. an open window, sudden rain, etc.). This effect is easily tested by varying the initial temperature from 293.15 $\mathsf{K}$ to 283.15 $\mathsf{K}$. This change on the initial vector, quickly backs the hypothesis since, by enforcing a temperature outside of the thermal comfort range, the solver is unable to return a solution and instead gives the error \texttt{return\_status is `Infeasible\_Problem\_Detected'}.\\
 
 For this reason, it was decided that these constraints should be relaxed in order to increase the robustness of the system. This is done by introducing a penalty variable into the cost function, which is developed in the following subsection.
 
